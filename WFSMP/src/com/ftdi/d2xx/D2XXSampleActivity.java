@@ -21,7 +21,8 @@ public class D2XXSampleActivity extends Activity {
 	public TextView number_devs;
 	public TextView device_information;
 	public TextView myData;
-	
+
+//    test
 	EditText dataToWrite;
 	
 		
