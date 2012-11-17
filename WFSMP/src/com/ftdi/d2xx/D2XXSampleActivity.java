@@ -9,10 +9,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.ftdi.*;
 import com.ftdi.D2xx.D2xxException;
+import edu.spbstu.wfsmp.activity.R;
 
 
 public class D2XXSampleActivity extends Activity {
-	
+/*
 	
 	Button exitBtn;
 	Button infoBtn;
@@ -26,7 +27,7 @@ public class D2XXSampleActivity extends Activity {
 	EditText dataToWrite;
 	
 		
-    /** Called when the activity is first created. */
+    *//** Called when the activity is first created. *//*
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
@@ -228,5 +229,5 @@ public class D2XXSampleActivity extends Activity {
             }
     	});
     	
-    }
+    }*/
 }
