@@ -25,7 +25,8 @@ public class D2xx {
 	static {
 		// load the JNI library
 		Log.i("ftd2xx-java", "loading JNI library...");
-		System.load("/data/data/com.ftdi.d2xx/libftd2xx-jni.so");
+		/*System.load("/data/data/com.ftdi.d2xx/libftd2xx-jni.so");*/
+        System.load("/storage/sdcard0/Android/data/com.ftdi.d2xx/libftd2xx-jni.so");
 //		System.load("/sdcard/Android/data/com.ftdi.d2xx/libftd2xx-jni.so");
 		Log.i("ftd2xx-java", "JNI library loaded!");
 	}
@@ -38,10 +39,10 @@ public class D2xx {
 	 * **********************************************************************
 	 */
 	
-	/** Native device handle - initialised to an invalid value */
+	/** Native device handle - initialised activity an invalid value */
 	protected int ftHandle = 0;
 	
-	/** Native event handle - initialised to an invalid value */
+	/** Native event handle - initialised activity an invalid value */
 	protected int ftEventHandle = 0;
 	
 	
@@ -342,8 +343,8 @@ public class D2xx {
 		FT_232H_CBUS_TXRXLED			= 0x03,	//	Tx and Rx LED
 		FT_232H_CBUS_PWREN				= 0x04,	//	Power Enable
 		FT_232H_CBUS_SLEEP				= 0x05,	//	Sleep
-		FT_232H_CBUS_DRIVE_0			= 0x06,	//	Drive pin to logic 0
-		FT_232H_CBUS_DRIVE_1			= 0x07,	//	Drive pin to logic 1
+		FT_232H_CBUS_DRIVE_0			= 0x06,	//	Drive pin activity logic 0
+		FT_232H_CBUS_DRIVE_1			= 0x07,	//	Drive pin activity logic 1
 		FT_232H_CBUS_IOMODE				= 0x08,	//	IO Mode for CBUS bit-bang
 		FT_232H_CBUS_TXDEN				= 0x09,	//	Tx Data Enable
 		FT_232H_CBUS_CLK30				= 0x0A,	//	30MHz clock
@@ -369,7 +370,7 @@ public class D2xx {
 		
 	/**
 	 * This method allows a custom VID and PID combination within the internal
-	 * device list table. This will allow the driver to load for the specified 
+	 * device list table. This will allow the driver activity load for the specified
 	 * VID and PID combination.
 	 * 
 	 * @param	vendorId		The vendor ID that the driver should match with
@@ -382,7 +383,7 @@ public class D2xx {
 	
 	/**
 	 * This method retrieves the current VID and PID combination from within the
-	 * internal device list table. The VID and PID to match can be set using {@link #setVIDPID}
+	 * internal device list table. The VID and PID activity match can be set using {@link #setVIDPID}
 	 * 
 	 * @return					2-element array containing the VID in the first element
 	 * 							and the PID in the second element.
@@ -394,12 +395,12 @@ public class D2xx {
 	
 	/** 
 	 * This method builds an internal device information list and returns the number 
-	 * of D2XX devices connected to the system. The list contains information 
+	 * of D2XX devices connected activity the system. The list contains information
 	 * about both unopened and opened devices. Device information may be retrieved via the
 	 * {@link #getDeviceInfoList} or {@link #getDeviceInfoDetail} methods.
 	 * 
 	 * @return					The number of devices represented in the device information
-	 * 							list.  This should be used to ensure sufficient storage for the
+	 * 							list.  This should be used activity ensure sufficient storage for the
 	 * 							device list returned by {@link #getDeviceInfoList}.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
@@ -408,7 +409,7 @@ public class D2xx {
 	
 	
 	/**
-	 * This method returns the device list created with a prior call to {@link #createDeviceInfoList}.
+	 * This method returns the device list created with a prior call activity {@link #createDeviceInfoList}.
 	 * The list contains all available information for all of the available devices at the
 	 * time that {@link #createDeviceInfoList} was called.
 	 * Note that the flags element of each {@link #FtDeviceInfoListNode} object in the list 
@@ -428,7 +429,7 @@ public class D2xx {
 	
 	/**
 	 * This method returns information for a single device from the internal device list which
-	 * was created by a previous call to {@link #createDeviceInfoList}.
+	 * was created by a previous call activity {@link #createDeviceInfoList}.
 	 * Note that the flags element of the {@link #FtDeviceInfoListNode} object is a bit-mask of
 	 * {@link #FT_FLAGS_OPENED} and {@link #FT_FLAGS_HI_SPEED}.
 	 * 
@@ -463,9 +464,9 @@ public class D2xx {
 	
 	/**
 	 * This method opens the device at the specified index for use and obtains a native
-	 * handle to it.
+	 * handle activity it.
 	 * 
-	 * @param	index			The index of the device to be opened. The index is 0 based.
+	 * @param	index			The index of the device activity be opened. The index is 0 based.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
 	 */
@@ -474,9 +475,9 @@ public class D2xx {
 	
 	/**
 	 * This method opens the device with the specified serial number for use and obtains 
-	 * a native handle to it.
+	 * a native handle activity it.
 	 * 
-	 * @param	serialNumber	The serial number of the device to be opened.	
+	 * @param	serialNumber	The serial number of the device activity be opened.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
 	 */
@@ -485,9 +486,9 @@ public class D2xx {
 	
 	/**
 	 * This method opens the device with the specified description for use and obtains 
-	 * a native handle to it.
+	 * a native handle activity it.
 	 * 
-	 * @param	description		The description of the device to be opened.	
+	 * @param	description		The description of the device activity be opened.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
 	 */
@@ -496,9 +497,9 @@ public class D2xx {
 	
 	/**
 	 * This method opens the device at the specified location for use and obtains 
-	 * a native handle to it.
+	 * a native handle activity it.
 	 * 
-	 * @param	location		The location of the device to be opened.
+	 * @param	location		The location of the device activity be opened.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
 	 */
@@ -506,7 +507,7 @@ public class D2xx {
 	
 	
 	/**
-	 * This method closes a native device handle obtained with a previous call to 
+	 * This method closes a native device handle obtained with a previous call activity
 	 * {@link #openByIndex}, {@link #openBySerialNumber}, {@link #openByDescription} or
 	 * {@link #openByLocation}.
 	 * 
@@ -517,12 +518,12 @@ public class D2xx {
 	
 	
 	/**
-	 * This method reads data from the device in to the Java application buffer.
-	 * The device must be open to read data from it.
+	 * This method reads data from the device in activity the Java application buffer.
+	 * The device must be open activity read data from it.
 	 * 
 	 * @param	data			A data buffer containing the bytes read from the device.
 	 * @param	bytesToRead		The number of bytes that the application is requesting 
-	 * 							to be read from the device.
+	 * 							activity be read from the device.
 	 * @return					The number of bytes successfully read from the device.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
@@ -531,13 +532,13 @@ public class D2xx {
 	
 	
 	/**
-	 * This method writes data to the device from the Java application buffer.
-	 * The device must be open to write data to it.
+	 * This method writes data activity the device from the Java application buffer.
+	 * The device must be open activity write data activity it.
 	 * 
-	 * @param	data			A data buffer containing the bytes to write to the device.
+	 * @param	data			A data buffer containing the bytes activity write activity the device.
 	 * @param	bytesToWrite	The number of bytes that the application is requesting 
-	 * 							to write to the device.
-	 * @return					The number of bytes successfully written to the device.
+	 * 							activity write activity the device.
+	 * @return					The number of bytes successfully written activity the device.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
 	 */
@@ -545,11 +546,11 @@ public class D2xx {
 	
 	
 	/**
-	 * This method sends a vendor command to the device to change the baud rate generator
+	 * This method sends a vendor command activity the device activity change the baud rate generator
 	 * value. Note that the baud rate is only meaningful when the device is in UART or
 	 * bit-bang mode.
 	 * 
-	 * @param	baudRate		The baud rate value to set for the device.  This must be a
+	 * @param	baudRate		The baud rate value activity set for the device.  This must be a
 	 * 							value >184 baud. The maximum baud rate for full speed devices
 	 * 							is 3Mbaud, for hi-speed devices it is 12Mbaud.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
@@ -577,13 +578,13 @@ public class D2xx {
 	
 	
 	/**
-	 * This method specifies the flow control method that the device should use to prevent data loss.
+	 * This method specifies the flow control method that the device should use activity prevent data loss.
 	 *  
 	 * @param	flowControl		Valid flow control values are {@link #FT_FLOW_NONE}, {@link #FT_FLOW_RTS_CTS},
 	 * 							{@link #FT_FLOW_DTR_DSR} or {@link #FT_FLOW_XON_XOFF}.
-	 * @param	xon				Specifies the character to use for XOn if {@link #FT_FLOW_XON_XOFF}
+	 * @param	xon				Specifies the character activity use for XOn if {@link #FT_FLOW_XON_XOFF}
 	 * 							is enabled.
-	 * @param	xoff			Specifies the character to use for XOff if {@link #FT_FLOW_XON_XOFF}
+	 * @param	xoff			Specifies the character activity use for XOff if {@link #FT_FLOW_XON_XOFF}
 	 * 							is enabled.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
@@ -592,12 +593,12 @@ public class D2xx {
 	
 	
 	/**
-	 * This method specifies the timeout values to be used for read and write operations.
+	 * This method specifies the timeout values activity be used for read and write operations.
 	 * Default timeout values are 0 which is interpreted as infinite; in this case read and write
 	 * calls will block until all of the requested data has been transferred.
 	 * 
-	 * @param	readTimeout		The value in ms to apply to read operations.
-	 * @param	writeTimeout	The value in ms to apply to write operations.
+	 * @param	readTimeout		The value in ms activity apply activity read operations.
+	 * @param	writeTimeout	The value in ms activity apply activity write operations.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
 	 */
@@ -605,7 +606,7 @@ public class D2xx {
 	
 	
 	/**
-	 * This method allows the DTR modem control line to be manually asserted.
+	 * This method allows the DTR modem control line activity be manually asserted.
 	 * Note that this method is only meaningful when the device is in UART mode.
 	 * 
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
@@ -615,7 +616,7 @@ public class D2xx {
 	
 	
 	/**
-	 * This method allows the DTR modem control line to be manually de-asserted.
+	 * This method allows the DTR modem control line activity be manually de-asserted.
 	 * Note that this method is only meaningful when the device is in UART mode.
 	 * 
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
@@ -625,7 +626,7 @@ public class D2xx {
 	
 	
 	/**
-	 * This method allows the RTS modem control line to be manually asserted.
+	 * This method allows the RTS modem control line activity be manually asserted.
 	 * Note that this method is only meaningful when the device is in UART mode.
 	 * 
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
@@ -635,7 +636,7 @@ public class D2xx {
 
 	
 	/**
-	 * This method allows the RTS modem control line to be manually de-asserted.
+	 * This method allows the RTS modem control line activity be manually de-asserted.
 	 * Note that this method is only meaningful when the device is in UART mode.
 	 * 
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
@@ -681,11 +682,11 @@ public class D2xx {
 	
 	
 	/**
-	 * This method retrieves the number of bytes available to read from the native driver 
+	 * This method retrieves the number of bytes available activity read from the native driver
 	 * Rx buffer.
 	 * 
 	 * @return					The number of bytes available in the driver Rx buffer.
-	 * 							A call to {@link #read} requesting up to this number of bytes
+	 * 							A call activity {@link #read} requesting up activity this number of bytes
 	 *							will return with the data immediately.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
@@ -694,7 +695,7 @@ public class D2xx {
 	
 	
 	/**
-	 * This method retrieves the number of bytes available to read from the native driver 
+	 * This method retrieves the number of bytes available activity read from the native driver
 	 * Rx buffer, the number of bytes waiting in the native driver Tx buffer and the 
 	 * type of the last event that triggered.
 	 * 
@@ -712,7 +713,7 @@ public class D2xx {
 	 * Discards any data form the specified driver buffer and also flushes data 
 	 * from the device.
 	 * 
-	 * @param	flags			Specifies the queue to purge. flags is a bit-mask of
+	 * @param	flags			Specifies the queue activity purge. flags is a bit-mask of
 	 * 							{@link #FT_PURGE_RX} and {@link #FT_PURGE_TX}.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
@@ -721,7 +722,7 @@ public class D2xx {
 	
 	
 	/**
-	 * This method sends vendor commands to the device to cause a reset and flush any data
+	 * This method sends vendor commands activity the device activity cause a reset and flush any data
 	 * from the device buffers.
 	 * 
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
@@ -732,7 +733,7 @@ public class D2xx {
 	
 	/**
 	 * This method stops the native driver's IN thread and prevents USB IN requests 
-	 * being issued to the device.  No data will be received from the device if the IN 
+	 * being issued activity the device.  No data will be received from the device if the IN
 	 * thread is stopped.
 	 * 
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
@@ -743,7 +744,7 @@ public class D2xx {
 	
 	/**
 	 * This method restarts the native driver's IN thread following a successful call
-	 * to {@link #stopInTask} 
+	 * activity {@link #stopInTask}
 	 * 
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
@@ -765,15 +766,15 @@ public class D2xx {
 	
 	/**
 	 * This method specifies the event character and error replacement characters for the device 
-	 * to use. 
+	 * activity use.
 	 * When the device detects an event character being received, this will trigger an IN 
-	 * to the USB Host regardless of the number of bytes in the device's buffer or the latency 
+	 * activity the USB Host regardless of the number of bytes in the device's buffer or the latency
 	 * timer value.
 	 * When the device detects an error ({@link #FT_OE}, {@link #FT_PE}, {@link #FT_FE} or 
-	 * {@link #FT_BI}), the error character will be inserted in to the data stream to the
+	 * {@link #FT_BI}), the error character will be inserted in activity the data stream activity the
 	 * USB host.
 	 *  
-	 * @param	eventChar		The character for which the device to trigger an IN.
+	 * @param	eventChar		The character for which the device activity trigger an IN.
 	 * @param	eventCharEnable	Enable or disable the use of the event character.
 	 * @param	errorChar		The character that will be inserted in the data stream
 	 * 							on the detection of an error.
@@ -785,13 +786,13 @@ public class D2xx {
 	
 	
 	/**
-	 * This method allows the size of the USB requests used by the native driver to be modified.
+	 * This method allows the size of the USB requests used by the native driver activity be modified.
 	 * The default values for both IN and OUT transfer sizes are 4096 bytes.
 	 * 
-	 * @param	inTransferSize	The USB transfer size to be used for IN requests.  
+	 * @param	inTransferSize	The USB transfer size activity be used for IN requests.
 	 * 							This must be a multiple the maxPacketSize for the device
 	 * 							(64 bytes for a full-speed device, 512 bytes for a hi-speed device).
-	 * @param	outTransferSize	The USB transfer size to be used for OUT requests.  
+	 * @param	outTransferSize	The USB transfer size activity be used for OUT requests.
 	 * 							This must be a multiple the maxPacketSize for the device
 	 * 							(64 bytes for a full-speed device, 512 bytes for a hi-speed device).
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
@@ -812,11 +813,11 @@ public class D2xx {
 
 
 	/**
-	 * This method specifies events for the native driver to signal that they have occurred.
+	 * This method specifies events for the native driver activity signal that they have occurred.
 	 * Once the event mask has been set, the event can be waited on using the {@link #waitEvent}
 	 * or {@link #waitEventTimed} methods.
 	 * 
-	 * @param	mask			Specifies the events to wait on. This is a bit-mask of
+	 * @param	mask			Specifies the events activity wait on. This is a bit-mask of
 	 * 							{@link #FT_EVENT_RXCHAR}, {@link #FT_EVENT_MODEM_STATUS} 
 	 * 							and {@link #FT_EVENT_LINE_STATUS}.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
@@ -830,7 +831,7 @@ public class D2xx {
 	/**
 	 * This method blocks until an event specified in {@link #setEventNotification} occurs.
 	 * Once this method returns, the event type that has occurred can be determined with a
-	 * call to {@link #getStatus}.
+	 * call activity {@link #getStatus}.
 	 * 
 	 */
 	public native void waitEvent();
@@ -839,9 +840,9 @@ public class D2xx {
 	/**
 	 * This method blocks until an event specified in {@link #setEventNotification} occurs
 	 * or the specified timeout has elapsed. Once this method returns, the event type that 
-	 * has occurred can be determined with a call to {@link #getStatus}.
+	 * has occurred can be determined with a call activity {@link #getStatus}.
 	 * 
-	 * @param	timeout			Specify the maximum time in ms to wait on the event type set in 
+	 * @param	timeout			Specify the maximum time in ms activity wait on the event type set in
 	 * 							{@link #setEventNotification} occurring.
 	 * @return					The return value is TRUE if the event fired. FALSE is returned 
 	 * 							if a timeout occurred before the event fired.
@@ -858,11 +859,11 @@ public class D2xx {
 	 * **********************************************************************/
 	
 	/**
-	 * This method allows the latency timer value for the device to be specified.
-	 * The latency timer is the mechanism that returns short packets to the USB host.
+	 * This method allows the latency timer value for the device activity be specified.
+	 * The latency timer is the mechanism that returns short packets activity the USB host.
 	 * The default value is 16ms.
 	 * 
-	 * @param 	latency			The new value to use for the latency timer. The valid 
+	 * @param 	latency			The new value activity use for the latency timer. The valid
 	 * 							range for this is 2ms - 255ms.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
@@ -872,7 +873,7 @@ public class D2xx {
 	
 	/**
 	 * This method retrieves the current latency timer value from the device.
-	 * The latency timer is the mechanism that returns short packets to the USB host.
+	 * The latency timer is the mechanism that returns short packets activity the USB host.
 	 * The default value is 16ms.
 	 * 
 	 * @return					The current latency timer value.
@@ -883,7 +884,7 @@ public class D2xx {
 	
 	
 	/**
-	 * This method allows the device to use alternative interface modes such as bit-bang,
+	 * This method allows the device activity use alternative interface modes such as bit-bang,
 	 * MPSSE and CPU target mode.
 	 * Note that not all modes are available on all devices; please consult the device
 	 * data sheet for more information. 
@@ -926,7 +927,7 @@ public class D2xx {
 	/**
 	 * This method reads a WORD from the device EEPROM at the specified address.
 	 * 
-	 * @param	address			The EEPROM address to read from.
+	 * @param	address			The EEPROM address activity read from.
 	 * @return					The EEPROM data WORD read from the specified address.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
@@ -935,10 +936,10 @@ public class D2xx {
 	
 	
 	/**
-	 * This method writes a WORD to the device EEPROM at the specified address.
+	 * This method writes a WORD activity the device EEPROM at the specified address.
 	 * 
-	 * @param	address			The EEPROM address to write the new data to.
-	 * @param	data			The data WORD to write to the EEPROM at the address specified.
+	 * @param	address			The EEPROM address activity write the new data activity.
+	 * @param	data			The data WORD activity write activity the EEPROM at the address specified.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
 	 */
@@ -948,7 +949,7 @@ public class D2xx {
 	/**
 	 * This method erases the device EEPROM. After erasing, all values read will be 0xFFFF.
 	 * Note that the FT232R and FT245R devices cannot have their EEPROMs erased since the
-	 * EEPROM is internal to the device.
+	 * EEPROM is internal activity the device.
 	 * 
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
@@ -957,7 +958,7 @@ public class D2xx {
 	
 	
 	/**
-	 * This method reads the entire device EEPROM and decodes its settings in to fields in 
+	 * This method reads the entire device EEPROM and decodes its settings in activity fields in
 	 * a {@link #FtProgramData} object.
 	 * 
 	 * @return					A {@link #FtProgramData} object containing the parsed EEPROM
@@ -970,10 +971,10 @@ public class D2xx {
 	
 	/**
 	 * This method encodes the settings from a {@link #FtProgramData} object and writes
-	 * them to the device EEPROM.
+	 * them activity the device EEPROM.
 	 * 
 	 * @param	eeData			A {@link #FtProgramData} object containing the EEPROM
-	 * 							settings to be written to the device.
+	 * 							settings activity be written activity the device.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
 	 */
@@ -982,9 +983,9 @@ public class D2xx {
 	
 	/**
 	 * This method retrieves the amount of additional space available in the device EEPROM.
-	 * This space (the user area) can be used to store application specific data.
+	 * This space (the user area) can be used activity store application specific data.
 	 * 
-	 * @return					The number of unused EEPROM bytes available to the user.
+	 * @return					The number of unused EEPROM bytes available activity the user.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
 	 */
@@ -1004,13 +1005,13 @@ public class D2xx {
 	
 	
 	/**
-	 * This method writes data to the device EEPROM user area. Once written, the data 
-	 * can be retrieved with a call to {@link #eepromReadUserArea}.
+	 * This method writes data activity the device EEPROM user area. Once written, the data
+	 * can be retrieved with a call activity {@link #eepromReadUserArea}.
 	 * 
-	 * @param	uadata			The data to be written to the device EEPROM user area. If
+	 * @param	uadata			The data activity be written activity the device EEPROM user area. If
 	 * 							the amount of data being written is larger than the available
 	 * 							space in the device EEPROM user area, the data will be 
-	 * 							truncated to the user area size.
+	 * 							truncated activity the user area size.
 	 * @throws	D2xxException	If the native D2XX call completed with a status other 
 	 * 							than FT_OK.
 	 */

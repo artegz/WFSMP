@@ -32,7 +32,7 @@ public class D2XXSampleActivity extends Activity {
     	setContentView(R.layout.main);
         
     	
-    	// Specify a non-default VID and PID combination to match if required
+    	// Specify a non-default VID and PID combination activity match if required
     	try {
     		D2xx.setVIDPID(0x0403, 0xada1);
     	}
@@ -154,7 +154,7 @@ public class D2XXSampleActivity extends Activity {
 					ftD2xx.openByIndex(0);
 					
 					// configure our port
-					// reset to UART mode for 232 devices
+					// reset activity UART mode for 232 devices
 					ftD2xx.setBitMode((byte)0, D2xx.FT_BITMODE_RESET);
 					
 					// set 9600 baud
@@ -166,7 +166,7 @@ public class D2XXSampleActivity extends Activity {
 					// set no flow control
 					ftD2xx.setFlowControl(D2xx.FT_FLOW_NONE, (byte)0x11, (byte)0x13);
 
-					// set latency timer to 16ms					
+					// set latency timer activity 16ms
 	            	ftD2xx.setLatencyTimer((byte)16);
 					
 					// set a read timeout of 5s
@@ -177,14 +177,14 @@ public class D2XXSampleActivity extends Activity {
 
 	            	
 	            	// OK, write some data!
-	            	// Get the data to write from the edit text control
+	            	// Get the data activity write from the edit text control
 					String writeData = dataToWrite.getText().toString();
 	            	byte[] OutData = writeData.getBytes();
 	            	
 					ftD2xx.write(OutData, writeData.length());
 
 					
-					// wait for data to be sent
+					// wait for data activity be sent
 	            	try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
