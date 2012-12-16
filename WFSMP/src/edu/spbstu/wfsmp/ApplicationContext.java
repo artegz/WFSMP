@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class ApplicationContext {
 
-    private final boolean mockDevice = false;
+    public final boolean mockDevice = true;
 
     @NotNull
     private static final ApplicationContext singleton = new ApplicationContext();
