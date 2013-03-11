@@ -2,6 +2,7 @@ package edu.spbstu.wfsmp.driver.mock;
 
 import android.util.Log;
 import edu.spbstu.wfsmp.driver.Device;
+import edu.spbstu.wfsmp.sensor.SensorException;
 import edu.spbstu.wfsmp.sensor.command.ProtocolCommand;
 import edu.spbstu.wfsmp.sensor.command.ProtocolCommandCodes;
 import edu.spbstu.wfsmp.sensor.command.ProtocolResultCodes;
@@ -25,6 +26,8 @@ public class MockDevice implements Device {
     @NotNull
     private DeviceProcessor deviceProcessor;
 
+
+
     public MockDevice() {
         this.deviceProcessor = new DeviceProcessor();
     }
@@ -36,7 +39,7 @@ public class MockDevice implements Device {
 
     @Override
     public int read(byte[] data, int bytesToRead) throws IOException {
-        return deviceProcessor.read(data, bytesToRead);
+        return deviceProcessor.read(data);
     }
 
     @Override
@@ -81,14 +84,19 @@ public class MockDevice implements Device {
 
             assert (outputBuffer.size() == 0) : "Previous response wasn't received.";
 
-            final String request = readCommand(inputStreamReader);
+            final String request;
+            try {
+                request = readCommand(inputStreamReader);
+            } catch (SensorException e) {
+                throw new IOException(e.getMessage());
+            }
             Log.i(TAG, "Command '" + request + "' received.");
             outputBuffer.add(processRequest(request));
 
             return bytesToWrite;
         }
 
-        public int read(byte[] data, int bytesToRead) throws IOException {
+        public int read(byte[] data) throws IOException {
             // todo asm bloking may be required
             final String response = outputBuffer.poll();
             assert (response != null) : "Response is null.";
@@ -111,7 +119,7 @@ public class MockDevice implements Device {
                 if (commandParams != null && commandParams.length == 2) {
                     result = new ProtocolCommand(ProtocolCommandCodes.RESPONSE_OK);
                 } else {
-                    result = new ProtocolCommand(ProtocolCommandCodes.RESPONSE_NOK, ProtocolResultCodes.WRONG_PARAMS_NUMBER);
+                    result = new ProtocolCommand(ProtocolCommandCodes.RESPONSE_NOK, String.valueOf(ProtocolResultCodes.WRONG_PARAMS_NUMBER));
                 }
             } else if (commandId.endsWith(ProtocolCommandCodes.REQUEST_STOP)) {
                 result = new ProtocolCommand(ProtocolCommandCodes.RESPONSE_OK);
@@ -126,22 +134,27 @@ public class MockDevice implements Device {
 
     // todo asm duplicates code in Command sender
     @NotNull
-    private static String readCommand(@NotNull InputStreamReader streamReader) throws IOException {
+    private static String readCommand(@NotNull InputStreamReader streamReader) throws IOException, SensorException {
         final StringBuilder sb = new StringBuilder();
 
-        Character c = null;
         final char prefix = readChar(streamReader);
-        assert (prefix == ProtocolCommandCodes.RESPONSE_PREFIX) : "Command has invalid prefix.";
+
+        if (prefix != ProtocolCommandCodes.RESPONSE_PREFIX) {
+            throw new SensorException("Command has invalid prefix.");
+        }
+
+        // append prefix
         sb.append(prefix);
 
-        do {
-            if (c != null) {
-                sb.append(c);
-            }
-            c = readChar(streamReader);
-        } while (c != ProtocolCommandCodes.COMMAND_POSTFIX);
+        // read until the command is complete
+        while (! sb.toString().endsWith(ProtocolCommandCodes.COMMAND_POSTFIX)) {
+            sb.append(readChar(streamReader));
+        }
 
-        return sb.toString();
+        final String completeCommand = sb.toString();
+
+        // return command with catted ending chars
+        return completeCommand.substring(0, completeCommand.length() - ProtocolCommandCodes.COMMAND_POSTFIX.length());
     }
 
     private static char readChar(InputStreamReader streamReader) throws IOException {

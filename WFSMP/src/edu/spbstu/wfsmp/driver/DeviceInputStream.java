@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InterruptedIOException;
 
 /**
  * User: artegz
@@ -30,16 +31,29 @@ public class DeviceInputStream extends InputStream {
     }
 
     @Override
-    public int read(byte[] buffer, int offset, int length) throws IOException {
-        final byte[] tmpBuffer = new byte[length];
+    public synchronized int read(byte[] buffer, int offset, int length) throws IOException {
+        int queueStatus = device.getQueueStatus();
 
-        // todo asm: blocking may be required
-        device.read(tmpBuffer, length);
+        try {
+            while (queueStatus < 1) {
+                // wait 1s
+                wait(1000);
+                // check if new data appears
+                queueStatus = device.getQueueStatus();
+            }
+        } catch (InterruptedException e) {
+            throw new InterruptedIOException(e.getMessage());
+        }
+
+        final int bytesToRead = Math.min(length, queueStatus);
+        final byte[] tmpBuffer = new byte[bytesToRead];
+
+        device.read(tmpBuffer, bytesToRead);
 
         // fill received buffer
         System.arraycopy(tmpBuffer, 0, buffer, offset, length);
 
-        return length;
+        return bytesToRead;
     }
 
     @Override
@@ -63,6 +77,11 @@ public class DeviceInputStream extends InputStream {
     public int read() throws IOException {
         final byte[] buffer = new byte[1];
         final int bytesRead = read(buffer, 0, 1);
-        return (bytesRead > 0) ? buffer[0] : bytesRead;
+
+        if (bytesRead < 1) {
+            throw new AssertionError("Expected at least 1 byte to be read.");
+        }
+
+        return buffer[0];
     }
 }

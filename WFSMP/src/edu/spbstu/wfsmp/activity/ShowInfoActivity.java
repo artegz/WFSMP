@@ -2,10 +2,12 @@ package edu.spbstu.wfsmp.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
+import android.os.Handler;
+import android.widget.TextView;
 import edu.spbstu.wfsmp.ApplicationContext;
 import edu.spbstu.wfsmp.ApplicationProperties;
-import edu.spbstu.wfsmp.sensor.SensorController;
+import edu.spbstu.wfsmp.activity.handlers.ForwardListener;
+import edu.spbstu.wfsmp.sensor.DeviceController;
 import edu.spbstu.wfsmp.sensor.SensorException;
 
 /**
@@ -20,27 +22,45 @@ public class ShowInfoActivity extends Activity {
         super.onCreate(savedInstanceState);
         ApplicationContext.debug(getClass(), "Init show info activity.");
 
-        setContentView(R.layout.info);
+        setContentView(R.layout.show_info);
 
-        final View devInfoView = findViewById(R.id.devInfoView);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final DeviceController deviceController = (DeviceController) ApplicationContext.getInstance().get(ApplicationProperties.DEVICE_CONTROLLER);
+                assert deviceController != null;
+
+                try {
+                    final String serialNumber = deviceController.getSerialNumber();
+
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            final TextView textView = (TextView) findViewById(R.id.serialNumberView);
+                            textView.setText(serialNumber);
+                        }
+                    });
+                } catch (SensorException e) {
+                    final String message = e.getMessage();
+
+                    ApplicationContext.handleException(getClass(), e);
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            final TextView textView = (TextView) findViewById(R.id.statusRow);
+                            textView.setText(message);
+                        }
+                    });
+                }
+            }
+        }).start();
 
         ApplicationContext.debug(getClass(), "Show info activity initialized.");
     }
 
-    private String prepareDevInfo() {
-        final SensorController sensor = (SensorController) ApplicationContext.getInstance().get(ApplicationProperties.CURRENT_SENSOR);
-        final StringBuilder sb = new StringBuilder();
-        assert (sensor != null);
-
-        try {
-            final String deviceNumber = sensor.getSerialNumber();
-        } catch (SensorException e) {
-            sb.append("Error. See log for details.");
-            ApplicationContext.handleException(getClass(), e);
-        }
-
-        return sb.toString();
+    @Override
+    public void onBackPressed() {
+        new ForwardListener(MenuActivity.class, this).onClick(null);
     }
-
 
 }

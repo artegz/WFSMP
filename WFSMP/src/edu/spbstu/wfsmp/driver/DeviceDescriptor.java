@@ -8,4 +8,6 @@ package edu.spbstu.wfsmp.driver;
 public interface DeviceDescriptor {
 
     int getIndex();
+
+    String getDeviceIdentifier();
 }

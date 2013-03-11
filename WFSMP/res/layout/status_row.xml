@@ -4,7 +4,9 @@
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
-
-    <include layout="@layout/status_row" android:layout_width="fill_parent" android:layout_height="wrap_content"/>
-
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="WFSMP"
+            android:id="@+id/statusRow" android:layout_gravity="center" android:layout_margin="5dp"/>
 </LinearLayout>

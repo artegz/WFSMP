@@ -7,9 +7,9 @@ package edu.spbstu.wfsmp.sensor;
  */
 public class SensorException extends Exception {
 
-    private int resultCode;
+    private Integer resultCode;
 
-    public SensorException(int resultCode) {
+    public SensorException(Integer resultCode) {
         this.resultCode = resultCode;
     }
 
@@ -17,7 +17,12 @@ public class SensorException extends Exception {
         super(throwable);
     }
 
-    public int getResultCode() {
+
+    public SensorException(String detailMessage) {
+        super(detailMessage);
+    }
+
+    public Integer getResultCode() {
         return resultCode;
     }
 }

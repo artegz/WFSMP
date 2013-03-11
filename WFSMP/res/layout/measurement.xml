@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+        >
+
+    <include layout="@layout/status_row" android:layout_width="fill_parent" android:layout_height="wrap_content"/>
+
+    <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/depthInput" android:layout_column="1" android:layout_margin="5dp"
+            android:singleLine="true" android:numeric="integer|signed|decimal"
+            android:inputType="number|numberDecimal|numberSigned" android:hint="Input depth"/>
+    <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/distanceInput" android:layout_column="1" android:layout_margin="5dp"
+            android:autoText="false" android:singleLine="true" android:numeric="signed|decimal"
+            android:inputType="number|numberDecimal|numberSigned" android:hint="Input distance"
+            android:linksClickable="false"/>
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Stop"
+            android:id="@+id/stopMeasBtn" android:layout_centerHorizontal="true"
+            android:layout_below="@+id/startMeasBtn" android:layout_alignParentRight="false"
+            android:layout_weight="50"/>
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:id="@+id/startMeasBtn"
+            android:layout_centerHorizontal="true" android:layout_alignParentTop="false"
+            android:layout_alignParentLeft="true" android:layout_weight="50"/>
+
+
+</LinearLayout>

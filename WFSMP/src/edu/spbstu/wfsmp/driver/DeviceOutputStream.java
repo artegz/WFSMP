@@ -1,7 +1,5 @@
 package edu.spbstu.wfsmp.driver;
 
-import com.ftdi.D2xx;
-import edu.spbstu.wfsmp.driver.Device;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;

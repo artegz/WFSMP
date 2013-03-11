@@ -1,16 +1,14 @@
 package edu.spbstu.wfsmp;
 
 import android.util.Log;
-import edu.spbstu.wfsmp.driver.DeviceManager;
-import edu.spbstu.wfsmp.driver.d2xx.D2xxDeviceManager;
-import edu.spbstu.wfsmp.driver.mock.MockDeviceManager;
+import edu.spbstu.wfsmp.driver.DeviceProvider;
+import edu.spbstu.wfsmp.driver.j2xx.D2xxDeviceProvider;
+import edu.spbstu.wfsmp.driver.mock.MockDeviceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * User: artegz
@@ -19,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class ApplicationContext {
 
-    public final boolean mockDevice = true;
+    public final boolean mockDevice = false;
 
     @NotNull
     private static final ApplicationContext singleton = new ApplicationContext();
@@ -55,11 +53,12 @@ public class ApplicationContext {
         properties.clear();
     }
 
-    public DeviceManager getDeviceManager() {
+    public DeviceProvider getDeviceManager() {
         if (mockDevice) {
-            return MockDeviceManager.getInstance();
+            return MockDeviceProvider.getInstance();
         } else {
-            return D2xxDeviceManager.getInstance();
+            // return D2xxDeviceManager.getInstance();
+            return D2xxDeviceProvider.getInstance();
         }
     }
 
@@ -68,7 +67,7 @@ public class ApplicationContext {
     }
 
     public static void debug(Class<?> clazz, String msg) {
-        Log.d(clazz.getName(), msg);
+        Log.i(clazz.getName(), msg);
     }
 
 }

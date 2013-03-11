@@ -1,6 +1,7 @@
 package edu.spbstu.wfsmp.sensor;
 
 import android.util.Log;
+import edu.spbstu.wfsmp.ApplicationContext;
 import edu.spbstu.wfsmp.sensor.command.ProtocolCommand;
 import edu.spbstu.wfsmp.sensor.command.ProtocolCommandCodes;
 import org.jetbrains.annotations.NotNull;
@@ -18,31 +19,76 @@ import java.util.Arrays;
  */
 class CommandSender {
     
-    public static final String TAG = "CommandSender";
+    public static final String TAG = CommandSender.class.getName();
+    
+    public static void sendNoResponseCommand(@NotNull ProtocolCommand request,
+                                             @NotNull OutputStreamWriter outputStreamWriter) throws SensorException {
+        ApplicationContext.debug(CommandSender.class, "Sending command.");
+        sendCommand(request, outputStreamWriter);
+        ApplicationContext.debug(CommandSender.class, "Command sent.");
+    }
 
-    // todo asm: make not static
-    /**
-     * Execute simple command (result is either OK or NOK).
-     *
-     * @param request request command
-     * @param outputStreamWriter
-     * @param inputStreamReader
-     * @throws edu.spbstu.wfsmp.sensor.SensorException thrown in case if execution failed
-     */
-    public static void execSimpleCommand(@NotNull ProtocolCommand request,
-                                         @NotNull OutputStreamWriter outputStreamWriter,
-                                         @NotNull InputStreamReader inputStreamReader)
+    public static void sendToBeConfirmedCommand(@NotNull ProtocolCommand request,
+                                                @NotNull OutputStreamWriter outputStreamWriter,
+                                                @NotNull InputStreamReader inputStreamReader)
             throws SensorException {
-        execRetCommand(request, outputStreamWriter, inputStreamReader, ProtocolCommandCodes.RESPONSE_OK);
+        sendToBeAnsweredCommand(request, outputStreamWriter, inputStreamReader, ProtocolCommandCodes.RESPONSE_OK);
     }
 
     @NotNull
-    public static ProtocolCommand execRetCommand(@NotNull ProtocolCommand request,
-                                                 @NotNull OutputStreamWriter outputStreamWriter,
-                                                 @NotNull InputStreamReader inputStreamReader,
-                                                 @NotNull String expectedResponse)
+    public static ProtocolCommand sendToBeAnsweredCommand(@NotNull ProtocolCommand request,
+                                                          @NotNull OutputStreamWriter outputStreamWriter,
+                                                          @NotNull InputStreamReader inputStreamReader,
+                                                          @NotNull String expectedResponse)
             throws SensorException {
         final ProtocolCommand response;
+
+        ApplicationContext.debug(CommandSender.class, "Sending command.");        
+        sendCommand(request, outputStreamWriter);
+        ApplicationContext.debug(CommandSender.class, "Command sent. Waiting for response...");
+
+        try {
+            response = receiveCommand(inputStreamReader);
+            ApplicationContext.debug(CommandSender.class, "Validating received response against expected response.");
+            if (! expectedResponse.equals(response.getCommandCode())) {
+                // if it is not expected response - it must be NOK with error code
+                if (! ProtocolCommandCodes.RESPONSE_NOK.equals(response.getCommandCode())) {
+                    throw new AssertionError("Unexpected response received.");
+                }
+
+                // get error code (if exists)
+                final String[] params = response.getParams();
+                final String resultCode = params != null && params.length > 0 ? params[0] : null;
+
+                // throw exception with error code
+                throw new SensorException(resultCode != null ? Integer.valueOf(resultCode) : null);
+            } else {
+                ApplicationContext.debug(CommandSender.class, "Received command is valid.");
+            }
+        } catch (IOException e) {
+            throw new SensorException(e);
+        }
+
+        return response;
+    }
+
+    @NotNull
+    private static ProtocolCommand receiveCommand(@NotNull InputStreamReader inputStreamReader) throws IOException, SensorException {
+        // read raw command from input stream
+        final String receivedRawCommand = readRawCommand(inputStreamReader);
+
+        ApplicationContext.debug(CommandSender.class, "Response command received.");
+        ApplicationContext.debug(CommandSender.class, "Raw response command: " + receivedRawCommand);
+        
+        // parse command
+        final ProtocolCommand receivedCommand = ProtocolCommand.parseCommand(receivedRawCommand);
+
+        ApplicationContext.debug(CommandSender.class, "Parsed response command: " + receivedCommand.getCommandCode());
+        
+        return receivedCommand;
+    }
+
+    private static void sendCommand(ProtocolCommand request, OutputStreamWriter outputStreamWriter) throws SensorException {
         final String preparedCommand = request.prepareCommand();
 
         Log.d(TAG, "Sending command '" + request.getCommandCode() + "' with params '" + Arrays.asList(request.getParams()) + "'. Prepared: " + preparedCommand + ".");
@@ -52,56 +98,37 @@ class CommandSender {
         try {
             // send start request
             outputStreamWriter.append(preparedCommand);
-            outputStreamWriter.flush();
-
-            Log.d(TAG, "Command sent. Waiting for response...");
-
-            // await OK response
-            final String receivedCommand = readCommand(inputStreamReader);
-
-            Log.d(TAG, "Response received: " + receivedCommand);
-
-            // todo ...
-            // response = ProtocolCommand.parseCommand(receivedCommand);
-            response = new ProtocolCommand(receivedCommand.substring(0, 2));
-
-            if (! expectedResponse.equals(response.getCommandCode())) {
-                // result for start request command must be either OK or NOK
-                assert (ProtocolCommandCodes.RESPONSE_NOK.equals(response.getCommandCode())) : "Unexpected response received.";
-
-                final Object[] params = response.getParams();
-                final Integer resultCode = params != null && params.length > 0 ? (Integer) params[0] : null;
-
-                assert (resultCode != null) : "NOK response must contains error code.";
-
-                throw new SensorException(resultCode);
-            }
+            outputStreamWriter.flush();            
         } catch (IOException e) {
             throw new SensorException(e);
         }
-
-        return response;
     }
-    
+
     @NotNull
-    private static String readCommand(@NotNull InputStreamReader streamReader) throws IOException {
+    private static String readRawCommand(@NotNull InputStreamReader streamReader) throws IOException, SensorException {
         final StringBuilder sb = new StringBuilder();
 
-        Character c = null;
         final char prefix = readChar(streamReader);
-        assert (prefix == ProtocolCommandCodes.RESPONSE_PREFIX) : "Command has invalid prefix.";
 
-        do {
-            if (c != null) {
-                sb.append(c);
-            }
-            c = readChar(streamReader);
-        } while (c != ProtocolCommandCodes.COMMAND_POSTFIX);
+        if (prefix != ProtocolCommandCodes.RESPONSE_PREFIX) {
+            throw new SensorException("Command has invalid prefix.");
+        }
 
-        return sb.toString();
+        // append prefix
+        sb.append(prefix);
+
+        // read until the command is complete
+        while (! sb.toString().endsWith(ProtocolCommandCodes.COMMAND_POSTFIX)) {
+            sb.append(readChar(streamReader));
+        }
+
+        final String completeCommand = sb.toString();
+
+        // return command with catted ending chars
+        return completeCommand.substring(0, completeCommand.length() - ProtocolCommandCodes.COMMAND_POSTFIX.length());
     }
 
-    private static char readChar(InputStreamReader streamReader) throws IOException {
+    private static char readChar(@NotNull InputStreamReader streamReader) throws IOException {
         int b = streamReader.read();
         assert (b != -1) : "Unexpected end of stream has been reached.";
         if (b < 0) {
@@ -111,7 +138,7 @@ class CommandSender {
         return (char) b;
     }
 
-    private static void logBytes(String str) {
+    private static void logBytes(@NotNull String str) {
         try {
             final byte[] bytes = str.getBytes("UTF-8");
             final StringBuilder sb = new StringBuilder();

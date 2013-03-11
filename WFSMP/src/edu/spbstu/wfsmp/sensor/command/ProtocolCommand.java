@@ -10,23 +10,36 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ProtocolCommand {
 
+    private static final int COMMAND_PREFIX_LENGTH = 2;
+
     @NotNull
     private String commandCode;
 
     @Nullable
-    private Object[] params;
+    private String[] params;
 
-    public ProtocolCommand(@NotNull String commandCode, @Nullable Object... params) {
+    public ProtocolCommand(@NotNull String commandCode, @Nullable String... params) {
         this.commandCode = commandCode;
         this.params = params;
     }
 
     @NotNull
     public static ProtocolCommand parseCommand(@NotNull String receivedCommand) {
+        // todo test
+        final String commandCode = receivedCommand.substring(0, COMMAND_PREFIX_LENGTH);
 
+        if (ProtocolCommandCodes.RESPONSE_DATA_BASE_OUT.equals(commandCode)) {
+            final String parametersString = receivedCommand.substring(2, receivedCommand.length());
+            final String[] parameters = parametersString.split(" ");
 
-        // todo
-        return new ProtocolCommand(receivedCommand.substring(0, 2), "00010002");
+            return new ProtocolCommand(receivedCommand.substring(0, 2), parameters);
+        } else if (ProtocolCommandCodes.RESPONSE_SERIAL_NUMBER.equals(commandCode)) {
+            return new ProtocolCommand(receivedCommand.substring(0, 2), receivedCommand.substring(2, receivedCommand.length()));
+        } else if (ProtocolCommandCodes.RESPONSE_NOK.equals(commandCode)) {
+            return new ProtocolCommand(receivedCommand.substring(0, 2));
+        } else {
+            throw new AssertionError("Command code '" + commandCode + "' is not supported.");
+        }
     }
 
     @NotNull
@@ -35,7 +48,7 @@ public class ProtocolCommand {
     }
 
     @Nullable
-    public Object[] getParams() {
+    public String[] getParams() {
         return params;
     }
 
@@ -45,7 +58,6 @@ public class ProtocolCommand {
 
         sb.append(commandCode);
         for (Object param : params) {
-            // todo asM: decimal or hex?
             if (param instanceof Boolean) {
                 sb.append(((Boolean) param) ? "1" : "0");
             } else if (param instanceof Integer) {

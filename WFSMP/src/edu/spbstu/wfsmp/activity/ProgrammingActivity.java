@@ -2,6 +2,7 @@ package edu.spbstu.wfsmp.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import edu.spbstu.wfsmp.activity.handlers.ForwardListener;
 
 /**
  * User: artegz
@@ -14,6 +15,13 @@ public class ProgrammingActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         setContentView(R.layout.programming);
+    }
+
+    @Override
+    public void onBackPressed() {
+        new ForwardListener(MenuActivity.class, this).onClick(null);
     }
 }

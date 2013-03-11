@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target(value = ElementType.FIELD)
 public @interface ComplexParameterPart {
-
+                  // todo asm: remove if not required
     int order();
 
     int numSymbols();

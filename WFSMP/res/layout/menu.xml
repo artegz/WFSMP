@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content">
+
+    <include layout="@layout/status_row" android:layout_width="fill_parent" android:layout_height="wrap_content"/>
+
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Measurement"
+            android:id="@+id/doMeasurementBtn" android:layout_margin="5dp"/>
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Export to excel"
+            android:id="@+id/excelExportBtn" android:layout_margin="5dp"/>
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="View results"
+            android:id="@+id/viewResultsBtn" android:layout_margin="5dp"/>
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Programming"
+            android:id="@+id/programmSensorBtn" android:layout_margin="5dp"/>
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Device info"
+            android:id="@+id/devInfoBtn" android:layout_margin="5dp"/>
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Disconnect"
+            android:id="@+id/disconnectBtn" android:layout_margin="5dp"/>
+</LinearLayout>

@@ -6,7 +6,6 @@ import android.view.View;
 import edu.spbstu.wfsmp.ApplicationContext;
 import edu.spbstu.wfsmp.ApplicationProperties;
 import edu.spbstu.wfsmp.driver.Device;
-import edu.spbstu.wfsmp.sensor.SensorController;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -31,7 +30,7 @@ public class DisconnectListener extends ForwardListener {
     }
 
     public static void disconnect() {
-        final Device device = (Device) ApplicationContext.getInstance().get(ApplicationProperties.CURRENT_DRIVER);
+        final Device device = (Device) ApplicationContext.getInstance().get(ApplicationProperties.CONNECTED_DEVICE);
 
         try {
             if (device != null) {
@@ -41,7 +40,7 @@ public class DisconnectListener extends ForwardListener {
             Log.e(TAG, e.getMessage(), e);
         }
 
-        ApplicationContext.getInstance().remove(ApplicationProperties.CURRENT_SENSOR);
-        ApplicationContext.getInstance().remove(ApplicationProperties.CURRENT_DRIVER);
+        ApplicationContext.getInstance().remove(ApplicationProperties.DEVICE_CONTROLLER);
+        ApplicationContext.getInstance().remove(ApplicationProperties.CONNECTED_DEVICE);
     }
 }

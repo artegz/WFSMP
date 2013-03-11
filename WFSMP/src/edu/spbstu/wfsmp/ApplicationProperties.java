@@ -7,8 +7,8 @@ package edu.spbstu.wfsmp;
  */
 public interface ApplicationProperties {
 
-    String CURRENT_DRIVER = "current_driver";
+    String CONNECTED_DEVICE = "current_driver";
 
-    String CURRENT_SENSOR = "current_sensor";
+    String DEVICE_CONTROLLER = "current_sensor";
 
 }

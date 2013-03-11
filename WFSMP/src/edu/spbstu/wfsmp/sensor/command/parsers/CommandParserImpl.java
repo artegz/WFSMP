@@ -22,7 +22,8 @@ class CommandParserImpl<T> implements CommandParser<T> {
     @NotNull
     @Override
     public ProtocolCommand parseCommand(@NotNull String commandStr) throws BadFormatException {
-        return new ProtocolCommand(parseCommandCode(commandStr), paramParser.parseCommandParam(commandStr.substring(getCommandCodeEnd())));
+        // return new ProtocolCommand(parseCommandCode(commandStr), paramParser.parseCommandParam(commandStr.substring(getCommandCodeEnd())));
+        throw new UnsupportedOperationException();
     }
 
     @NotNull

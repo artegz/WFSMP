@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+    <include layout="@layout/status_row" android:layout_width="fill_parent" android:layout_height="wrap_content"/>
+    <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:id="@+id/resultsTable">
+        <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" android:id="@+id/resultsHeaderRow"
+                android:measureWithLargestChild="false">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:id="@+id/noColumn" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:padding="5dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Distance"
+                    android:id="@+id/distanceColumn" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:padding="5dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Depth"
+                    android:id="@+id/depthColumn" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:padding="5dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Speed"
+                    android:id="@+id/speedColumn" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:padding="5dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Frequency"
+                    android:id="@+id/frequencyColumn" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:padding="5dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Turns"
+                    android:id="@+id/turnsColumn" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:padding="5dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Time"
+                    android:id="@+id/timeColumn" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:padding="5dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Type"
+                    android:id="@+id/typeColumn" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:padding="5dp"/>
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date"
+                    android:id="@+id/dateColumn" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:padding="5dp"/>
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
