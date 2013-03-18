@@ -24,6 +24,8 @@ public class ShowInfoActivity extends Activity {
 
         setContentView(R.layout.show_info);
 
+        final Handler handler = new Handler();
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -33,7 +35,7 @@ public class ShowInfoActivity extends Activity {
                 try {
                     final String serialNumber = deviceController.getSerialNumber();
 
-                    new Handler().post(new Runnable() {
+                    handler.post(new Runnable() {
                         @Override
                         public void run() {
                             final TextView textView = (TextView) findViewById(R.id.serialNumberView);
@@ -44,7 +46,7 @@ public class ShowInfoActivity extends Activity {
                     final String message = e.getMessage();
 
                     ApplicationContext.handleException(getClass(), e);
-                    new Handler().post(new Runnable() {
+                    handler.post(new Runnable() {
                         @Override
                         public void run() {
                             final TextView textView = (TextView) findViewById(R.id.statusRow);

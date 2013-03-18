@@ -51,7 +51,7 @@ public class DeviceInputStream extends InputStream {
         device.read(tmpBuffer, bytesToRead);
 
         // fill received buffer
-        System.arraycopy(tmpBuffer, 0, buffer, offset, length);
+        System.arraycopy(tmpBuffer, 0, buffer, offset, bytesToRead);
 
         return bytesToRead;
     }
