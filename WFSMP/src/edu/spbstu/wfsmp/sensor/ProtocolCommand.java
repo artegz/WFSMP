@@ -1,5 +1,6 @@
-package edu.spbstu.wfsmp.sensor.command;
+package edu.spbstu.wfsmp.sensor;
 
+import edu.spbstu.wfsmp.ApplicationContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,7 +11,13 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ProtocolCommand {
 
-    private static final int COMMAND_PREFIX_LENGTH = 2;
+    public static final int COMMAND_PREFIX_LENGTH = 2;
+    // command format
+    public static final char REQUEST_PREFIX             = '#';
+    public static final char RESPONSE_PREFIX            = '*';
+    public static final String COMMAND_POSTFIX            = "\r\n";
+    // encoding
+    public static final String PROTOCOL_COMMAND_ENCODING = "UTF-8";
 
     @NotNull
     private String commandCode;
@@ -24,13 +31,14 @@ public class ProtocolCommand {
     }
 
     @NotNull
-    public static ProtocolCommand parseCommand(@NotNull String receivedCommand) {
+    public static ProtocolCommand parseCommand(@NotNull String receivedCommand) throws SensorException {
+        validate(receivedCommand);
+
         // todo test
-        final String commandCode = receivedCommand.substring(0, COMMAND_PREFIX_LENGTH);
+        final String commandCode = getCommandCode(receivedCommand);
 
         if (ProtocolCommandCodes.RESPONSE_DATA_BASE_OUT.equals(commandCode)) {
-            final String parametersString = receivedCommand.substring(2, receivedCommand.length());
-            final String[] parameters = parametersString.split(" ");
+            final String[] parameters = getParameters(receivedCommand, " ");
 
             return new ProtocolCommand(receivedCommand.substring(0, 2), parameters);
         } else if (ProtocolCommandCodes.RESPONSE_SERIAL_NUMBER.equals(commandCode)) {
@@ -40,6 +48,27 @@ public class ProtocolCommand {
         } else {
             throw new AssertionError("Command code '" + commandCode + "' is not supported.");
         }
+    }
+
+    public static void validate(String response) throws SensorException {
+        ApplicationContext.debug(ProtocolCommand.class, "Validating received response against expected response.");
+
+        final String commandCode = getCommandCode(response);
+
+        if (ProtocolCommandCodes.ERROR.equals(commandCode)) {
+            throw new SensorException("Unrecognized command.");
+        } else {
+            ApplicationContext.debug(ProtocolCommand.class, "Received command is valid.");
+        }
+    }
+
+    public static String[] getParameters(String receivedCommand, String delimiter) {
+        final String parametersString = receivedCommand.substring(2, receivedCommand.length());
+        return delimiter != null ? parametersString.split(delimiter) : new String[] {parametersString};
+    }
+
+    public static String getCommandCode(@NotNull String command) {
+        return command.substring(0, ProtocolCommand.COMMAND_PREFIX_LENGTH);
     }
 
     @NotNull
@@ -54,6 +83,10 @@ public class ProtocolCommand {
 
     @NotNull
     public String prepareCommand() {
+        return prepareCommand(commandCode, params);
+    }
+
+    public static String prepareCommand(String commandCode, Object... params) {
         final StringBuilder sb = new StringBuilder();
 
         sb.append(commandCode);
@@ -72,7 +105,7 @@ public class ProtocolCommand {
                 throw new AssertionError("Unknown param type.");
             }
         }
-        sb.append(ProtocolCommandCodes.COMMAND_POSTFIX);
+        sb.append(COMMAND_POSTFIX);
 
         return sb.toString();
     }

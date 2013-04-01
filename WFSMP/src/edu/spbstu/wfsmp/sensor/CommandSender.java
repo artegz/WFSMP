@@ -2,15 +2,12 @@ package edu.spbstu.wfsmp.sensor;
 
 import android.util.Log;
 import edu.spbstu.wfsmp.ApplicationContext;
-import edu.spbstu.wfsmp.sensor.command.ProtocolCommand;
-import edu.spbstu.wfsmp.sensor.command.ProtocolCommandCodes;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 
 /**
  * User: artegz
@@ -20,84 +17,46 @@ import java.util.Arrays;
 class CommandSender {
     
     public static final String TAG = CommandSender.class.getName();
-    
-    public static void sendNoResponseCommand(@NotNull ProtocolCommand request,
-                                             @NotNull OutputStreamWriter outputStreamWriter) throws SensorException {
-        ApplicationContext.debug(CommandSender.class, "Sending command.");
-        sendCommand(request, outputStreamWriter);
-        ApplicationContext.debug(CommandSender.class, "Command sent.");
-    }
-
-    public static void sendToBeConfirmedCommand(@NotNull ProtocolCommand request,
-                                                @NotNull OutputStreamWriter outputStreamWriter,
-                                                @NotNull InputStreamReader inputStreamReader)
-            throws SensorException {
-        sendToBeAnsweredCommand(request, outputStreamWriter, inputStreamReader, ProtocolCommandCodes.RESPONSE_OK);
-    }
 
     @NotNull
-    public static ProtocolCommand sendToBeAnsweredCommand(@NotNull ProtocolCommand request,
-                                                          @NotNull OutputStreamWriter outputStreamWriter,
-                                                          @NotNull InputStreamReader inputStreamReader,
-                                                          @NotNull String expectedResponse)
-            throws SensorException {
-        final ProtocolCommand response;
+    public static String send(@NotNull String request,
+                              @NotNull OutputStreamWriter outputStreamWriter,
+                              @NotNull InputStreamReader inputStreamReader)
+            throws SensorException, IOException {
+        return send0(outputStreamWriter, inputStreamReader, request);
+    }
 
-        ApplicationContext.debug(CommandSender.class, "Sending command.");        
-        sendCommand(request, outputStreamWriter);
+    private static String send0(OutputStreamWriter outputStreamWriter, InputStreamReader inputStreamReader, String preparedCommand) throws SensorException, IOException {
+        ApplicationContext.debug(CommandSender.class, "Sending command '" + preparedCommand + "'.");
+
+        // send command
+        sendCommand(outputStreamWriter, preparedCommand);
+
         ApplicationContext.debug(CommandSender.class, "Command sent. Waiting for response...");
 
-        try {
-            response = receiveCommand(inputStreamReader);
-            ApplicationContext.debug(CommandSender.class, "Validating received response against expected response.");
-            if (! expectedResponse.equals(response.getCommandCode())) {
-                // if it is not expected response - it must be NOK with error code
-                if (! ProtocolCommandCodes.RESPONSE_NOK.equals(response.getCommandCode())) {
-                    throw new AssertionError("Unexpected response received.");
-                }
+        // receive response
+        final String response = receiveCommand0(inputStreamReader);
 
-                // get error code (if exists)
-                final String[] params = response.getParams();
-                final String resultCode = params != null && params.length > 0 ? params[0] : null;
-
-                // throw exception with error code
-                throw new SensorException(resultCode != null ? Integer.valueOf(resultCode) : null);
-            } else {
-                ApplicationContext.debug(CommandSender.class, "Received command is valid.");
-            }
-        } catch (IOException e) {
-            throw new SensorException(e);
-        }
+        ApplicationContext.debug(CommandSender.class, "Response command received: " + response);
 
         return response;
     }
 
     @NotNull
-    private static ProtocolCommand receiveCommand(@NotNull InputStreamReader inputStreamReader) throws IOException, SensorException {
+    private static String receiveCommand0(@NotNull InputStreamReader inputStreamReader) throws IOException, SensorException {
         // read raw command from input stream
         final String receivedRawCommand = readRawCommand(inputStreamReader);
 
-        ApplicationContext.debug(CommandSender.class, "Response command received.");
-        ApplicationContext.debug(CommandSender.class, "Raw response command: " + receivedRawCommand);
-        
-        // parse command
-        final ProtocolCommand receivedCommand = ProtocolCommand.parseCommand(receivedRawCommand);
-
-        ApplicationContext.debug(CommandSender.class, "Parsed response command: " + receivedCommand.getCommandCode());
-        
-        return receivedCommand;
+        return receivedRawCommand;
     }
 
-    private static void sendCommand(ProtocolCommand request, OutputStreamWriter outputStreamWriter) throws SensorException {
-        final String preparedCommand = request.prepareCommand();
+    private static void sendCommand(OutputStreamWriter outputStreamWriter, String command) throws SensorException {
 
-        Log.d(TAG, "Sending command '" + request.getCommandCode() + "' with params '" + Arrays.asList(request.getParams()) + "'. Prepared: " + preparedCommand + ".");
-
-        logBytes(preparedCommand);
+        logBytes(command);
 
         try {
             // send start request
-            outputStreamWriter.append(preparedCommand);
+            outputStreamWriter.append(command);
             outputStreamWriter.flush();            
         } catch (IOException e) {
             throw new SensorException(e);
@@ -110,7 +69,7 @@ class CommandSender {
 
         final char prefix = readChar(streamReader);
 
-        if (prefix != ProtocolCommandCodes.RESPONSE_PREFIX) {
+        if (prefix != ProtocolCommand.RESPONSE_PREFIX) {
             throw new SensorException("Command has invalid prefix.");
         }
 
@@ -118,14 +77,14 @@ class CommandSender {
         sb.append(prefix);
 
         // read until the command is complete
-        while (! sb.toString().endsWith(ProtocolCommandCodes.COMMAND_POSTFIX)) {
+        while (! sb.toString().endsWith(ProtocolCommand.COMMAND_POSTFIX)) {
             sb.append(readChar(streamReader));
         }
 
         final String completeCommand = sb.toString();
 
         // return command with catted ending chars
-        return completeCommand.substring(0, completeCommand.length() - ProtocolCommandCodes.COMMAND_POSTFIX.length());
+        return completeCommand.substring(0, completeCommand.length() - ProtocolCommand.COMMAND_POSTFIX.length());
     }
 
     private static char readChar(@NotNull InputStreamReader streamReader) throws IOException {

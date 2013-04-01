@@ -8,6 +8,7 @@ import edu.spbstu.wfsmp.ApplicationContext;
 import edu.spbstu.wfsmp.ApplicationProperties;
 import edu.spbstu.wfsmp.activity.handlers.ForwardListener;
 import edu.spbstu.wfsmp.sensor.DeviceController;
+import edu.spbstu.wfsmp.sensor.DeviceControllerImpl;
 import edu.spbstu.wfsmp.sensor.SensorException;
 
 /**
@@ -27,11 +28,8 @@ public class ShowInfoActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final DeviceController deviceController = (DeviceController) ApplicationContext.getInstance().get(ApplicationProperties.DEVICE_CONTROLLER);
-                assert deviceController != null;
-
                 try {
-                    final String serialNumber = deviceController.getSerialNumber();
+                    final String serialNumber = ApplicationContext.getInstance().getDeviceController().getSerialNumber();
 
                     new Handler().post(new Runnable() {
                         @Override

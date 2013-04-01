@@ -9,6 +9,8 @@ import android.widget.TextView;
 import edu.spbstu.wfsmp.ApplicationContext;
 import edu.spbstu.wfsmp.activity.handlers.DisconnectListener;
 import edu.spbstu.wfsmp.activity.handlers.ForwardListener;
+import edu.spbstu.wfsmp.sensor.ExcelExporter;
+import edu.spbstu.wfsmp.sensor.SensorException;
 
 /**
  * User: Artegz
@@ -31,7 +33,11 @@ public class MenuActivity extends Activity {
         findViewById(R.id.excelExportBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showMessage("Export to excel isn't supported yet.");
+                try {
+                    new ExcelExporter().doExportAll();
+                } catch (SensorException e) {
+                    ApplicationContext.handleException(getClass(), e);
+                }
             }
         });
         findViewById(R.id.viewResultsBtn).setOnClickListener(new ForwardListener(ViewResultsActivity.class, this));
