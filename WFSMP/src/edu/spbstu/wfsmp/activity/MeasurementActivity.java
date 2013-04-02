@@ -23,7 +23,7 @@ import java.util.TimerTask;
 public class MeasurementActivity extends Activity {
 
     public static final String TAG = MeasurementActivity.class.getName();
-    private final static int STATE_CHECK_PERIOD = 1000;
+    private final static int STATE_CHECK_PERIOD = 10000; //todo synchronize sender
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

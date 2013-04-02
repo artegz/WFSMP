@@ -1,6 +1,7 @@
 package edu.spbstu.wfsmp.sensor;
 
 import android.text.format.DateFormat;
+import edu.spbstu.wfsmp.ApplicationContext;
 import edu.spbstu.wfsmp.driver.Device;
 import edu.spbstu.wfsmp.driver.DeviceInputStream;
 import edu.spbstu.wfsmp.driver.DeviceOutputStream;
@@ -15,6 +16,8 @@ import java.util.*;
  * Time: 0:46
  */
 public class DeviceControllerImpl implements DeviceController {
+
+    private static final Object monitor = new Object(); // todo use
 
     private static final int YEAR_BASE = 2000;
 
@@ -80,11 +83,11 @@ public class DeviceControllerImpl implements DeviceController {
         final List<MeasurementResult> measResults;
 
         // todo test
-        return Arrays.asList(new MeasurementResult(1, 2, 3, 4, 5, 6, "12:30", "01.01.2013", new Status((byte)127)),
+        /*return Arrays.asList(new MeasurementResult(1, 2, 3, 4, 5, 6, "12:30", "01.01.2013", new Status((byte)127)),
                 new MeasurementResult(1, 2, 3, 4, 5, 6, "12:30", "01.01.2013", new Status((byte)127)),
-                new MeasurementResult(1, 2, 3, 4, 5, 6, "12:30", "01.01.2013", new Status((byte)127)));
+                new MeasurementResult(1, 2, 3, 4, 5, 6, "12:30", "01.01.2013", new Status((byte)127)));*/
 
-        /*final String response = sendRequest(ProtocolCommandCodes.REQUEST_DATA_BASE_OUT, ProtocolCommandCodes.RESPONSE_DATA_BASE_OUT);
+        final String response = sendRequest(ProtocolCommandCodes.REQUEST_DATA_BASE_OUT, ProtocolCommandCodes.RESPONSE_DATA_BASE_OUT);
 
         ProtocolCommand.validate(response);
 
@@ -113,7 +116,7 @@ public class DeviceControllerImpl implements DeviceController {
                     DateFormat.format("dd.MM.yyyy", calendar).toString(), DateFormat.format("hh:mm:ss", calendar).toString(), new Status(status)));
         }
 
-        return measResults;*/
+        return measResults;
     }
 
     @Override
@@ -129,7 +132,7 @@ public class DeviceControllerImpl implements DeviceController {
 
         // send prepared command
         final String response = sendRequest(ProtocolCommandCodes.REQUEST_START, ProtocolCommandCodes.RESPONSE_START);
-        final String[]  params = ProtocolCommand.getParameters(response, "");
+        final String[]  params = ProtocolCommand.getParameters(response, null);
 
         if (params != null && params.length > 0) {
             if (Integer.valueOf(params[0]) != 0) {
@@ -146,7 +149,7 @@ public class DeviceControllerImpl implements DeviceController {
     public void stop() throws SensorException {
         // send prepared command
         final String response = sendRequest(ProtocolCommandCodes.REQUEST_STOP, ProtocolCommandCodes.RESPONSE_STOP);
-        final String[]  params = ProtocolCommand.getParameters(response, "");
+        final String[]  params = ProtocolCommand.getParameters(response, null);
 
         if (params != null && params.length > 0) {
             if (Integer.valueOf(params[0]) != 1) {
@@ -163,7 +166,7 @@ public class DeviceControllerImpl implements DeviceController {
     public Integer getFrequencyOut() throws SensorException {
         // send prepared command
         final String response = sendRequest(ProtocolCommandCodes.REQUEST_FREQUENCY_OUT, ProtocolCommandCodes.RESPONSE_FREQUENCY_OUT);
-        final String[]  params = ProtocolCommand.getParameters(response, "");
+        final String[]  params = ProtocolCommand.getParameters(response, null);
         Integer result;
 
         if (params != null && params.length > 0) {
@@ -179,7 +182,7 @@ public class DeviceControllerImpl implements DeviceController {
     public Integer getVelocityOut() throws SensorException {
         // send prepared command
         final String response = sendRequest(ProtocolCommandCodes.REQUEST_VELOCITY_OUT, ProtocolCommandCodes.RESPONSE_VELOCITY_OUT);
-        final String[]  params = ProtocolCommand.getParameters(response, "");
+        final String[]  params = ProtocolCommand.getParameters(response, null);
         Integer result;
 
         if (params != null && params.length > 0) {
@@ -195,7 +198,7 @@ public class DeviceControllerImpl implements DeviceController {
     public Integer getTurnNumberOut() throws SensorException {
         // send prepared command
         final String response = sendRequest(ProtocolCommandCodes.REQUEST_TURN_NUMBER_OUT, ProtocolCommandCodes.RESPONSE_TURN_NUMBER_OUT);
-        final String[]  params = ProtocolCommand.getParameters(response, "");
+        final String[]  params = ProtocolCommand.getParameters(response, null);
         Integer result;
 
         if (params != null && params.length > 0) {
@@ -211,7 +214,7 @@ public class DeviceControllerImpl implements DeviceController {
     public Integer getMeasureTimeOut() throws SensorException {
         // send prepared command
         final String response = sendRequest(ProtocolCommandCodes.REQUEST_MEASURE_TIME_OUT, ProtocolCommandCodes.RESPONSE_MEASURE_TIME_OUT);
-        final String[]  params = ProtocolCommand.getParameters(response, "");
+        final String[]  params = ProtocolCommand.getParameters(response, null);
         Integer result;
 
         if (params != null && params.length > 0) {
@@ -228,11 +231,12 @@ public class DeviceControllerImpl implements DeviceController {
     public Status getStatusOut() throws SensorException {
         // send prepared command
         final String response = sendRequest(ProtocolCommandCodes.REQUEST_STATUS_OUT, ProtocolCommandCodes.RESPONSE_STATUS_OUT);
-        final String[]  params = ProtocolCommand.getParameters(response, "");
+        final String[]  params = ProtocolCommand.getParameters(response, null);
         Byte result;
 
         if (params != null && params.length > 0) {
-            result = Byte.valueOf(params[0]);
+            ApplicationContext.debug(getClass(), "Status:" + params[0]);
+            result = Byte.valueOf(params[0], 16);
         } else {
             throw new SensorException("Bad format.");
         }
@@ -244,7 +248,7 @@ public class DeviceControllerImpl implements DeviceController {
     public String getRealTimeOut() throws SensorException {
         // send prepared command
         final String response = sendRequest(ProtocolCommandCodes.REQUEST_REAL_TIME_OUT, ProtocolCommandCodes.RESPONSE_REAL_TIME_OUT);
-        final String[]  params = ProtocolCommand.getParameters(response, "");
+        final String[]  params = ProtocolCommand.getParameters(response, null);
         String result;
 
         if (params != null && params.length > 0) {
@@ -267,7 +271,7 @@ public class DeviceControllerImpl implements DeviceController {
     public String getRealDateOut() throws SensorException {
         // send prepared command
         final String response = sendRequest(ProtocolCommandCodes.REQUEST_REAL_DATE_OUT, ProtocolCommandCodes.RESPONSE_REAL_DATE_OUT);
-        final String[]  params = ProtocolCommand.getParameters(response, "");
+        final String[]  params = ProtocolCommand.getParameters(response, null);
         String result;
 
         if (params != null && params.length > 0) {

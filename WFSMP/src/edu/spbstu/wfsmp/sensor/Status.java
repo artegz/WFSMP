@@ -82,7 +82,7 @@ public final class Status {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
 
-        for (int i = bitSet.size(); i >= 0; i++) {
+        for (int i = bitSet.size(); i >= 0; i--) {
              sb.append(bitSet.get(i) ? "1" : "0");
         }
 
