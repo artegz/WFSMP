@@ -3,9 +3,9 @@ package edu.spbstu.wfsmp.driver.mock;
 import android.util.Log;
 import edu.spbstu.wfsmp.driver.Device;
 import edu.spbstu.wfsmp.sensor.SensorException;
-import edu.spbstu.wfsmp.sensor.command.ProtocolCommand;
-import edu.spbstu.wfsmp.sensor.command.ProtocolCommandCodes;
-import edu.spbstu.wfsmp.sensor.command.ProtocolResultCodes;
+import edu.spbstu.wfsmp.sensor.ProtocolCommand;
+import edu.spbstu.wfsmp.sensor.ProtocolCommandCodes;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
@@ -80,7 +80,7 @@ public class MockDevice implements Device {
 
         public int write(byte[] data, int bytesToWrite) throws IOException {
             final InputStreamReader inputStreamReader = new InputStreamReader(
-                    new ByteArrayInputStream(data), ProtocolCommandCodes.PROTOCOL_COMMAND_ENCODING);
+                    new ByteArrayInputStream(data), ProtocolCommand.PROTOCOL_COMMAND_ENCODING);
 
             assert (outputBuffer.size() == 0) : "Previous response wasn't received.";
 
@@ -100,7 +100,7 @@ public class MockDevice implements Device {
             // todo asm bloking may be required
             final String response = outputBuffer.poll();
             assert (response != null) : "Response is null.";
-            final byte[] responseBytes = response.getBytes(ProtocolCommandCodes.PROTOCOL_COMMAND_ENCODING);
+            final byte[] responseBytes = response.getBytes(ProtocolCommand.PROTOCOL_COMMAND_ENCODING);
 
             System.arraycopy(responseBytes, 0, data, 0, responseBytes.length);
 
@@ -109,7 +109,12 @@ public class MockDevice implements Device {
 
         @NotNull
         public String processRequest(@NotNull String request) {
-            final ProtocolCommand command = ProtocolCommand.parseCommand(request);
+            final ProtocolCommand command;
+            try {
+                command = ProtocolCommand.parseCommand(request);
+            } catch (SensorException e) {
+                throw new AssertionError(e);
+            }
             final String commandId = command.getCommandCode();
             final ProtocolCommand result;
 
@@ -117,12 +122,12 @@ public class MockDevice implements Device {
                 final Object[] commandParams = command.getParams();
 
                 if (commandParams != null && commandParams.length == 2) {
-                    result = new ProtocolCommand(ProtocolCommandCodes.RESPONSE_OK);
+                    result = new ProtocolCommand("fake"); // todo ...
                 } else {
-                    result = new ProtocolCommand(ProtocolCommandCodes.RESPONSE_NOK, String.valueOf(ProtocolResultCodes.WRONG_PARAMS_NUMBER));
+                    result = new ProtocolCommand(ProtocolCommandCodes.RESPONSE_NOK);
                 }
             } else if (commandId.endsWith(ProtocolCommandCodes.REQUEST_STOP)) {
-                result = new ProtocolCommand(ProtocolCommandCodes.RESPONSE_OK);
+                result = new ProtocolCommand("fake");
             } else {
                 throw new UnsupportedOperationException("Command '" + commandId + "' isn't supported yet.");
             }
@@ -139,7 +144,7 @@ public class MockDevice implements Device {
 
         final char prefix = readChar(streamReader);
 
-        if (prefix != ProtocolCommandCodes.RESPONSE_PREFIX) {
+        if (prefix != ProtocolCommand.RESPONSE_PREFIX) {
             throw new SensorException("Command has invalid prefix.");
         }
 
@@ -147,14 +152,14 @@ public class MockDevice implements Device {
         sb.append(prefix);
 
         // read until the command is complete
-        while (! sb.toString().endsWith(ProtocolCommandCodes.COMMAND_POSTFIX)) {
+        while (! sb.toString().endsWith(ProtocolCommand.COMMAND_POSTFIX)) {
             sb.append(readChar(streamReader));
         }
 
         final String completeCommand = sb.toString();
 
         // return command with catted ending chars
-        return completeCommand.substring(0, completeCommand.length() - ProtocolCommandCodes.COMMAND_POSTFIX.length());
+        return completeCommand.substring(0, completeCommand.length() - ProtocolCommand.COMMAND_POSTFIX.length());
     }
 
     private static char readChar(InputStreamReader streamReader) throws IOException {

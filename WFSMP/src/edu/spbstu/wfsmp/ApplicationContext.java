@@ -4,6 +4,8 @@ import android.util.Log;
 import edu.spbstu.wfsmp.driver.DeviceProvider;
 import edu.spbstu.wfsmp.driver.j2xx.D2xxDeviceProvider;
 import edu.spbstu.wfsmp.driver.mock.MockDeviceProvider;
+import edu.spbstu.wfsmp.sensor.DeviceController;
+import edu.spbstu.wfsmp.sensor.DeviceControllerImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,6 +62,17 @@ public class ApplicationContext {
             // return D2xxDeviceManager.getInstance();
             return D2xxDeviceProvider.getInstance();
         }
+    }
+
+    @NotNull
+    public DeviceController getDeviceController() {
+        final DeviceController dc = (DeviceController) ApplicationContext.getInstance().get(ApplicationProperties.DEVICE_CONTROLLER);
+
+        if (dc == null) {
+            throw new IllegalStateException("Device controller not initialized.");
+        }
+
+        return dc;
     }
 
     public static void handleException(Class clazz, Throwable e) {

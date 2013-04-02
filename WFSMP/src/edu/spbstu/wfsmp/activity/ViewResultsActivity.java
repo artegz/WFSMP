@@ -7,13 +7,11 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.*;
 import edu.spbstu.wfsmp.ApplicationContext;
-import edu.spbstu.wfsmp.ApplicationProperties;
 import edu.spbstu.wfsmp.activity.handlers.ForwardListener;
-import edu.spbstu.wfsmp.sensor.DeviceController;
 import edu.spbstu.wfsmp.sensor.MeasurementResult;
 import edu.spbstu.wfsmp.sensor.SensorException;
+import edu.spbstu.wfsmp.sensor.Status;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,11 +34,10 @@ public class ViewResultsActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final DeviceController deviceController = (DeviceController) ApplicationContext.getInstance().get(ApplicationProperties.DEVICE_CONTROLLER);
-                assert deviceController != null;
-
                 try {
-                    final List<MeasurementResult> allMeasurements = deviceController.getAllMeasurements();
+                    final List<MeasurementResult> allMeasurements = ApplicationContext.getInstance().getDeviceController().getDataBaseOut();
+
+                    ApplicationContext.debug(getClass(), "Device DB loaded. Total " + allMeasurements.size() + " entries.");
 
                     handler.post(new Runnable() {
                         @Override
@@ -52,19 +49,26 @@ public class ViewResultsActivity extends Activity {
 
                             table.addView(headerRow);
 
+                            int i = 0;
+
                             for (MeasurementResult measurementResult : allMeasurements) {
                                 final TableRow newDataRow = new TableRow(table.getContext());
 
-                                newDataRow.addView(createCell(measurementResult.getMeasNo(), newDataRow.getContext()));
+                                newDataRow.addView(createCell(i++, newDataRow.getContext()));
 
                                 newDataRow.addView(createCell(measurementResult.getDistance(), newDataRow.getContext()));
                                 newDataRow.addView(createCell(measurementResult.getDepth(), newDataRow.getContext()));
-                                newDataRow.addView(createCell(measurementResult.getEstimatedSteed(), newDataRow.getContext()));
-                                newDataRow.addView(createCell(measurementResult.getMeasuredFrequency(), newDataRow.getContext()));
+                                newDataRow.addView(createCell(measurementResult.getVelocity(), newDataRow.getContext()));
+                                newDataRow.addView(createCell(measurementResult.getFrequency(), newDataRow.getContext()));
                                 newDataRow.addView(createCell(measurementResult.getTurns(), newDataRow.getContext()));
-                                newDataRow.addView(createCell(measurementResult.getTime(), newDataRow.getContext()));
-                                newDataRow.addView(createCell(measurementResult.getType(), newDataRow.getContext()));
-                                newDataRow.addView(createCell(measurementResult.getTimestamp(), newDataRow.getContext()));
+                                newDataRow.addView(createCell(measurementResult.getMeasTime(), newDataRow.getContext()));
+                                final Status status = measurementResult.getStatus();
+                                if (status != null) {
+                                    newDataRow.addView(createCell(status.getWhirligigType(), newDataRow.getContext()));
+                                } else {
+                                    newDataRow.addView(createCell("-", newDataRow.getContext()));
+                                }
+                                newDataRow.addView(createCell(measurementResult.getDate() + " " + measurementResult.getTime(), newDataRow.getContext()));
 
                                 table.addView(newDataRow);
                             }

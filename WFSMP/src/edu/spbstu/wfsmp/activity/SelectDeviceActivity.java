@@ -22,7 +22,7 @@ import edu.spbstu.wfsmp.driver.Device;
 import edu.spbstu.wfsmp.driver.DeviceDescriptor;
 import edu.spbstu.wfsmp.driver.DeviceException;
 import edu.spbstu.wfsmp.driver.DeviceProvider;
-import edu.spbstu.wfsmp.sensor.DeviceController;
+import edu.spbstu.wfsmp.sensor.DeviceControllerImpl;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -207,7 +207,7 @@ public class SelectDeviceActivity extends Activity {
                 final Device device = driverManager.openDevice(deviceDescriptor, SelectDeviceActivity.this);
 
                 // create controller for connected device
-                final DeviceController deviceController = new DeviceController(device);
+                final DeviceControllerImpl deviceController = new DeviceControllerImpl(device);
 
                 // register controller in application context
                 ApplicationContext.getInstance().set(ApplicationProperties.CONNECTED_DEVICE, device);

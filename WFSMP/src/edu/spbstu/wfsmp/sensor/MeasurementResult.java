@@ -6,99 +6,87 @@ package edu.spbstu.wfsmp.sensor;
  * Time: 0:47
  */
 
-import edu.spbstu.wfsmp.sensor.command.ComplexParameter;
-import edu.spbstu.wfsmp.sensor.command.ComplexParameterPart;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Date;
-
 /**
  * Java representation for single measurement result.
  */
-@ComplexParameter
 public class MeasurementResult {
 
-    @ComplexParameterPart(order = 0, numSymbols = 4)
-    private int measNo;
+    private Integer velocity;
 
-    @ComplexParameterPart(order = 1, numSymbols = 4)
-    private int estimatedSteed;
+    private Integer frequency;
 
-    @ComplexParameterPart(order = 2, numSymbols = 4)
-    private int measuredFrequency;
+    private Integer distance;
 
-    // in protocol consist from two 4char words - date and time
-    @NotNull
-    @ComplexParameterPart(order = 3, numSymbols = 4)
-    private Date timestamp;
+    private Integer turns;
 
-    @ComplexParameterPart(order = 4, numSymbols = 4)
-    private int distance;
+    private Integer measTime;
 
-    private int turns;
+    private Integer depth;
 
-    private int time;
+    private String time;
 
-    private int type;
+    private String date;
 
-    @ComplexParameterPart(order = 5, numSymbols = 4)
-    private int depth;
+    private Status status;
 
-    public MeasurementResult(int measNo,
-                             int distance,
-                             int depth,
-                             int estimatedSteed,
-                             int measuredFrequency,
-                             int turns,
-                             int time,
-                             int type,
-                             @NotNull Date timestamp) {
-        this.measNo = measNo;
-        this.estimatedSteed = estimatedSteed;
-        this.measuredFrequency = measuredFrequency;
-        this.timestamp = timestamp;
+    public MeasurementResult() {
+        // empty non argument constructor
+    }
+
+    public MeasurementResult(Integer velocity,
+                             Integer frequency,
+                             Integer distance,
+                             Integer turns,
+                             Integer measTime,
+                             Integer depth,
+                             String time,
+                             String date,
+                             Status status) {
+        this.velocity = velocity;
+        this.frequency = frequency;
         this.distance = distance;
         this.turns = turns;
-        this.time = time;
-        this.type = type;
+        this.measTime = measTime;
         this.depth = depth;
+        this.time = time;
+        this.date = date;
+        this.status = status;
     }
 
-    public int getMeasNo() {
-        return measNo;
+    public Integer getVelocity() {
+        return velocity;
     }
 
-    public int getEstimatedSteed() {
-        return estimatedSteed;
+    public Integer getFrequency() {
+        return frequency;
     }
 
-    public int getMeasuredFrequency() {
-        return measuredFrequency;
-    }
-
-    @NotNull
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public int getDistance() {
+    public Integer getDistance() {
         return distance;
     }
 
-    public int getDepth() {
-        return depth;
-    }
-
-    public int getTurns() {
+    public Integer getTurns() {
         return turns;
     }
 
-    public int getTime() {
+    public Integer getMeasTime() {
+        return measTime;
+    }
+
+    public Integer getDepth() {
+        return depth;
+    }
+
+    public String getTime() {
         return time;
     }
 
-    public int getType() {
-        return type;
+    public String getDate() {
+        return date;
+    }
+
+    public Status getStatus() {
+        return status;
     }
 
     @Override
@@ -108,24 +96,30 @@ public class MeasurementResult {
 
         MeasurementResult that = (MeasurementResult) o;
 
-        if (depth != that.depth) return false;
-        if (distance != that.distance) return false;
-        if (estimatedSteed != that.estimatedSteed) return false;
-        if (measuredFrequency != that.measuredFrequency) return false;
-        if (measNo != that.measNo) return false;
-        if (timestamp != null ? !timestamp.equals(that.timestamp) : that.timestamp != null) return false;
+        if (date != null ? !date.equals(that.date) : that.date != null) return false;
+        if (depth != null ? !depth.equals(that.depth) : that.depth != null) return false;
+        if (distance != null ? !distance.equals(that.distance) : that.distance != null) return false;
+        if (frequency != null ? !frequency.equals(that.frequency) : that.frequency != null) return false;
+        if (measTime != null ? !measTime.equals(that.measTime) : that.measTime != null) return false;
+        if (status != null ? !status.equals(that.status) : that.status != null) return false;
+        if (time != null ? !time.equals(that.time) : that.time != null) return false;
+        if (turns != null ? !turns.equals(that.turns) : that.turns != null) return false;
+        if (velocity != null ? !velocity.equals(that.velocity) : that.velocity != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = measNo;
-        result = 31 * result + estimatedSteed;
-        result = 31 * result + measuredFrequency;
-        result = 31 * result + (timestamp != null ? timestamp.hashCode() : 0);
-        result = 31 * result + distance;
-        result = 31 * result + depth;
+        int result = velocity != null ? velocity.hashCode() : 0;
+        result = 31 * result + (frequency != null ? frequency.hashCode() : 0);
+        result = 31 * result + (distance != null ? distance.hashCode() : 0);
+        result = 31 * result + (turns != null ? turns.hashCode() : 0);
+        result = 31 * result + (measTime != null ? measTime.hashCode() : 0);
+        result = 31 * result + (depth != null ? depth.hashCode() : 0);
+        result = 31 * result + (time != null ? time.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
 }
