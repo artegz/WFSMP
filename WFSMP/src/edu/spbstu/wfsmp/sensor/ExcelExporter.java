@@ -1,7 +1,6 @@
 package edu.spbstu.wfsmp.sensor;
 
 import android.os.Environment;
-import android.util.Log;
 import edu.spbstu.wfsmp.ApplicationContext;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
@@ -21,12 +20,12 @@ import java.util.List;
  */
 public class ExcelExporter {
 
-    public void doExportAll() throws SensorException {
+    public String doExportAll() throws SensorException {
         final List<MeasurementResult> measurementResults = ApplicationContext.getInstance().getDeviceController().getDataBaseOut();
-        doExport(measurementResults);
+        return doExport(measurementResults);
     }
 
-    public void doExport(@NotNull List<MeasurementResult> measurementResults) {
+    public String doExport(@NotNull List<MeasurementResult> measurementResults) {
         final Date currentDate = new Date();
         final String filename = String.valueOf(currentDate.getTime()) + ".xls";
 
@@ -61,7 +60,7 @@ public class ExcelExporter {
                 } else {
                     writeCell(8, 2 + i, "-", false, sheet);
                 }
-                writeCell(9, 2 + i, String.valueOf(measurementResult.getDate() + " " + measurementResult.getTime()), false, sheet);
+                writeCell(9, 2 + i, String.valueOf(measurementResult.getRealDate() + " " + measurementResult.getRealTime()), false, sheet);
             }
 
             workbook.write();
@@ -74,6 +73,8 @@ public class ExcelExporter {
             ApplicationContext.handleException(getClass(), e);
             throw new AssertionError(e);
         }
+
+        return filename;
     }
 
 

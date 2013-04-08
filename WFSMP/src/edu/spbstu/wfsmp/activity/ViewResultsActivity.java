@@ -26,8 +26,8 @@ public class ViewResultsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_results);
 
-        final TextView textView = (TextView) findViewById(R.id.statusRow);
-        textView.setText("Loading results...");
+        final TextView statusRow = (TextView) findViewById(R.id.statusRow);
+        statusRow.setText("Loading results...");
 
         final Handler handler = new Handler();
 
@@ -68,10 +68,12 @@ public class ViewResultsActivity extends Activity {
                                 } else {
                                     newDataRow.addView(createCell("-", newDataRow.getContext()));
                                 }
-                                newDataRow.addView(createCell(measurementResult.getDate() + " " + measurementResult.getTime(), newDataRow.getContext()));
+                                newDataRow.addView(createCell(measurementResult.getRealDate() + " " + measurementResult.getRealTime(), newDataRow.getContext()));
 
                                 table.addView(newDataRow);
                             }
+
+                            statusRow.setText("Completed.");
                         }
                     });
                 } catch (SensorException e) {

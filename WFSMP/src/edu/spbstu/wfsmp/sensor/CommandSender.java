@@ -70,7 +70,8 @@ class CommandSender {
         final char prefix = readChar(streamReader);
 
         if (prefix != ProtocolCommand.RESPONSE_PREFIX) {
-            throw new SensorException("Command has invalid prefix.");
+            ApplicationContext.error(CommandSender.class, "Command has invalid prefix. Expected: '" + ProtocolCommand.RESPONSE_PREFIX + "'. Received: '" + prefix + "'.");
+            throw new SensorException("Command has invalid prefix. Expected: '" + ProtocolCommand.RESPONSE_PREFIX + "'. Received: '" + prefix + "'." );
         }
 
         // append prefix
@@ -93,7 +94,7 @@ class CommandSender {
         if (b < 0) {
             throw new AssertionError("Unexpected end of stream has been reached.");
         }
-        Log.d(TAG, "Char received: " + b);
+        Log.d(TAG, "Char received: " + (char) b + " (" + b + ")" );
         return (char) b;
     }
 

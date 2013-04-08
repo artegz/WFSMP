@@ -23,15 +23,11 @@ public class MeasurementResult {
 
     private Integer depth;
 
-    private String time;
+    private String realTime;
 
-    private String date;
+    private String realDate;
 
     private Status status;
-
-    public MeasurementResult() {
-        // empty non argument constructor
-    }
 
     public MeasurementResult(Integer velocity,
                              Integer frequency,
@@ -39,8 +35,8 @@ public class MeasurementResult {
                              Integer turns,
                              Integer measTime,
                              Integer depth,
-                             String time,
-                             String date,
+                             String realTime,
+                             String realDate,
                              Status status) {
         this.velocity = velocity;
         this.frequency = frequency;
@@ -48,8 +44,8 @@ public class MeasurementResult {
         this.turns = turns;
         this.measTime = measTime;
         this.depth = depth;
-        this.time = time;
-        this.date = date;
+        this.realTime = realTime;
+        this.realDate = realDate;
         this.status = status;
     }
 
@@ -77,12 +73,12 @@ public class MeasurementResult {
         return depth;
     }
 
-    public String getTime() {
-        return time;
+    public String getRealTime() {
+        return realTime;
     }
 
-    public String getDate() {
-        return date;
+    public String getRealDate() {
+        return realDate;
     }
 
     public Status getStatus() {
@@ -96,13 +92,13 @@ public class MeasurementResult {
 
         MeasurementResult that = (MeasurementResult) o;
 
-        if (date != null ? !date.equals(that.date) : that.date != null) return false;
+        if (realDate != null ? !realDate.equals(that.realDate) : that.realDate != null) return false;
         if (depth != null ? !depth.equals(that.depth) : that.depth != null) return false;
         if (distance != null ? !distance.equals(that.distance) : that.distance != null) return false;
         if (frequency != null ? !frequency.equals(that.frequency) : that.frequency != null) return false;
         if (measTime != null ? !measTime.equals(that.measTime) : that.measTime != null) return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
-        if (time != null ? !time.equals(that.time) : that.time != null) return false;
+        if (realTime != null ? !realTime.equals(that.realTime) : that.realTime != null) return false;
         if (turns != null ? !turns.equals(that.turns) : that.turns != null) return false;
         if (velocity != null ? !velocity.equals(that.velocity) : that.velocity != null) return false;
 
@@ -117,8 +113,8 @@ public class MeasurementResult {
         result = 31 * result + (turns != null ? turns.hashCode() : 0);
         result = 31 * result + (measTime != null ? measTime.hashCode() : 0);
         result = 31 * result + (depth != null ? depth.hashCode() : 0);
-        result = 31 * result + (time != null ? time.hashCode() : 0);
-        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (realTime != null ? realTime.hashCode() : 0);
+        result = 31 * result + (realDate != null ? realDate.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }

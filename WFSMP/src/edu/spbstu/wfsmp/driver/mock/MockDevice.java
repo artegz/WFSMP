@@ -97,7 +97,6 @@ public class MockDevice implements Device {
         }
 
         public int read(byte[] data) throws IOException {
-            // todo asm bloking may be required
             final String response = outputBuffer.poll();
             assert (response != null) : "Response is null.";
             final byte[] responseBytes = response.getBytes(ProtocolCommand.PROTOCOL_COMMAND_ENCODING);

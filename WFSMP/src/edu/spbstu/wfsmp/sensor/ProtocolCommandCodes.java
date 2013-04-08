@@ -33,6 +33,27 @@ public interface ProtocolCommandCodes {
     String REQUEST_REAL_DATE_OUT        = "#D";
     String RESPONSE_REAL_DATE_OUT       = "*D";
 
+    String REQUEST_SAVE                 = "#w";
+    String RESPONSE_SAVE                = "*w";
+
+    String REQUEST_DB_SIZE              = "#N";
+    String RESPONSE_DB_SIZE             = "*N";
+
+    String REQUEST_CLEAR_DB             = "#c";
+    String RESPONSE_CLEAR_DB            = "*c";
+
+    String a = "#N/r/n"; // db rows count
+    String a1 = "#wllldd/r/n"; // write current
+    // "#c/r/n"  clear db
+
+    // set whirwind type - "#md/r/n"
+    // set time - "#Thhmmss/r/n"
+    // set date - "#DddMMyy/r/n"
+    // set display "#dm/r/n"
+
+
+
+
     String ERROR                        = "*?\r\n";
 
 

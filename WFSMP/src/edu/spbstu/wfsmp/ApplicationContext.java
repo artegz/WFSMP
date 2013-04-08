@@ -83,4 +83,8 @@ public class ApplicationContext {
         Log.i(clazz.getName(), msg);
     }
 
+    public static void error(Class<?> clazz, String msg) {
+        Log.e(clazz.getName(), msg);
+    }
+
 }

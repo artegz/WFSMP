@@ -27,6 +27,8 @@ public class MenuActivity extends Activity {
 
         setContentView(R.layout.menu);
 
+        final Handler handler = new Handler();
+
         findViewById(R.id.doMeasurementBtn).setOnClickListener(new ForwardListener(MeasurementActivity.class, this));
         findViewById(R.id.devInfoBtn).setOnClickListener(new ForwardListener(ShowInfoActivity.class, this));
         findViewById(R.id.disconnectBtn).setOnClickListener(new DisconnectListener(SelectDeviceActivity.class, this));
@@ -34,7 +36,15 @@ public class MenuActivity extends Activity {
             @Override
             public void onClick(View view) {
                 try {
-                    new ExcelExporter().doExportAll();
+                    final String filename = new ExcelExporter().doExportAll();
+                    final TextView statusRow = (TextView) findViewById(R.id.statusRow);
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            statusRow.setText("Device database successfully exported into file '" + filename + "'.");
+                        }
+                    });
                 } catch (SensorException e) {
                     ApplicationContext.handleException(getClass(), e);
                 }
@@ -42,6 +52,24 @@ public class MenuActivity extends Activity {
         });
         findViewById(R.id.viewResultsBtn).setOnClickListener(new ForwardListener(ViewResultsActivity.class, this));
         findViewById(R.id.programmSensorBtn).setOnClickListener(new ForwardListener(ProgrammingActivity.class, this));
+        findViewById(R.id.clearResults).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    ApplicationContext.getInstance().getDeviceController().clearDb();
+                    final TextView statusRow = (TextView) findViewById(R.id.statusRow);
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            statusRow.setText("Device database successfully cleared.");
+                        }
+                    });
+                } catch (SensorException e) {
+                    ApplicationContext.handleException(getClass(), e);
+                }
+            }
+        });
     }
 
     private void showMessage(final String message) {

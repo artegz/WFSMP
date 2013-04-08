@@ -18,7 +18,7 @@ public interface DeviceController {
     @NotNull
     List<MeasurementResult> getDataBaseOut() throws SensorException;
 
-    void start(@NotNull MeasurementParameters parameters) throws SensorException;
+    void start() throws SensorException;
 
     void stop() throws SensorException;
 
@@ -27,4 +27,8 @@ public interface DeviceController {
 
     @NotNull
     Status getStatusOut() throws SensorException;
+
+    void save(@NotNull MeasurementParameters parameters) throws SensorException;
+
+    void clearDb() throws SensorException;
 }

@@ -24,6 +24,11 @@
     <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:text="Clear results"
+            android:id="@+id/clearResults"/>
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:text="Programming"
             android:id="@+id/programmSensorBtn" android:layout_margin="5dp"/>
     <Button

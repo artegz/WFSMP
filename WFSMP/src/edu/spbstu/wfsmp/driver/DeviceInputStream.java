@@ -13,6 +13,8 @@ import java.io.InterruptedIOException;
  */
 public class DeviceInputStream extends InputStream {
 
+    public static final int READ_BLOCK_TIMEOUT = 25;
+
     @NotNull
     private final Device device;
 
@@ -36,8 +38,8 @@ public class DeviceInputStream extends InputStream {
 
         try {
             while (queueStatus < 1) {
-                // wait 1s
-                wait(1000);
+                // wait
+                wait(READ_BLOCK_TIMEOUT);
                 // check if new data appears
                 queueStatus = device.getQueueStatus();
             }
