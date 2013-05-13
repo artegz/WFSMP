@@ -6,6 +6,10 @@ package edu.spbstu.wfsmp.sensor;
  * Time: 0:47
  */
 
+import android.text.format.DateFormat;
+
+import java.util.Date;
+
 /**
  * Java representation for single measurement result.
  */
@@ -23,11 +27,12 @@ public class MeasurementResult {
 
     private Integer depth;
 
-    private String realTime;
+    private Date realTime;
 
-    private String realDate;
+    private Date realDate;
 
     private Status status;
+    private Integer direction;
 
     public MeasurementResult(Integer velocity,
                              Integer frequency,
@@ -35,9 +40,10 @@ public class MeasurementResult {
                              Integer turns,
                              Integer measTime,
                              Integer depth,
-                             String realTime,
-                             String realDate,
-                             Status status) {
+                             Date realTime,
+                             Date realDate,
+                             Status status,
+                             Integer direction) {
         this.velocity = velocity;
         this.frequency = frequency;
         this.distance = distance;
@@ -47,6 +53,15 @@ public class MeasurementResult {
         this.realTime = realTime;
         this.realDate = realDate;
         this.status = status;
+        this.direction = direction;
+    }
+
+    public static String formatDateTime(MeasurementResult measurement) {
+        return DateFormat.format("dd.MM.yyyy", measurement.getRealDate()) + " " + DateFormat.format("hh:mm:ss", measurement.getRealTime());
+    }
+
+    public int getDirection() {
+        return direction;
     }
 
     public Integer getVelocity() {
@@ -73,11 +88,11 @@ public class MeasurementResult {
         return depth;
     }
 
-    public String getRealTime() {
+    public Date getRealTime() {
         return realTime;
     }
 
-    public String getRealDate() {
+    public Date getRealDate() {
         return realDate;
     }
 
@@ -101,6 +116,7 @@ public class MeasurementResult {
         if (realTime != null ? !realTime.equals(that.realTime) : that.realTime != null) return false;
         if (turns != null ? !turns.equals(that.turns) : that.turns != null) return false;
         if (velocity != null ? !velocity.equals(that.velocity) : that.velocity != null) return false;
+        if (direction != null ? !direction.equals(that.direction) : that.direction != null) return false;
 
         return true;
     }
@@ -116,6 +132,7 @@ public class MeasurementResult {
         result = 31 * result + (realTime != null ? realTime.hashCode() : 0);
         result = 31 * result + (realDate != null ? realDate.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (direction != null ? direction.hashCode() : 0);
         return result;
     }
 }

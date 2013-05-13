@@ -15,12 +15,19 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Serial number"
+                android:text="@string/info_serial_number"
                 android:id="@+id/serialNumberLabel" android:layout_margin="5dp"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Loading..."
+                android:text="@string/loading"
                 android:id="@+id/serialNumberView" android:layout_margin="5dp"/>
+    </LinearLayout>
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                  android:layout_height="wrap_content" android:id="@+id/linearLayout">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/info_software_version"
+                  android:id="@+id/softwareVersionLabel" android:layout_margin="5dp"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/loading"
+                  android:id="@+id/softwareVersionView" android:layout_margin="5dp"/>
     </LinearLayout>
 </LinearLayout>

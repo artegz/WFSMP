@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+        >
+
+    <include layout="@layout/status_row" android:layout_width="fill_parent" android:layout_height="wrap_content"/>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent"
+                                  android:layout_height="wrap_content" android:id="@+id/linearLayout"
+                                  android:layout_margin="10dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:text="@string/pref_psv_mode" android:id="@+id/psvModeCaption"
+                                  android:layout_margin="5dp" android:textStyle="bold"/>
+                        <RadioGroup
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:id="@+id/psvWhTypeGrp">
+                            <RadioButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/pref_v_70"
+                                    android:id="@+id/psvMode70"/>
+                            <RadioButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/pref_v_120"
+                                    android:id="@+id/psvMode120"/>
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                         android:text="@string/pref_1_1" android:id="@+id/psvMode11"/>
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                         android:text="@string/pref_1_20" android:id="@+id/psvMode1_20"/>
+                        </RadioGroup>
+                    </LinearLayout>
+                    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent"
+                                  android:layout_height="wrap_content" android:id="@+id/linearLayout1"
+                                  android:layout_margin="10dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:text="@string/pref_sound" android:id="@+id/soundControlCaption" android:layout_margin="5dp"
+                                  android:textStyle="bold"/>
+                        <RadioGroup android:layout_width="fill_parent" android:layout_height="fill_parent"
+                                    android:id="@+id/soundGrp">
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                         android:text="@string/on" android:id="@+id/soundOn"/>
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                         android:text="@string/off" android:id="@+id/sounfOff"/>
+                        </RadioGroup>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical" android:layout_width="wrap_content"
+                              android:layout_height="wrap_content">
+                    <LinearLayout android:orientation="vertical" android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_margin="10dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:text="@string/pref_psv_display" android:id="@+id/displayModeCaption"
+                                  android:layout_margin="5dp" android:textStyle="bold"/>
+                        <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:id="@+id/dispModeGrp">
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                         android:text="@string/meas_velocity" android:id="@+id/displayModeVel"/>
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                         android:text="@string/meas_num_turns" android:id="@+id/displayModeNumTurns"/>
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                         android:text="@string/meas_frequency" android:id="@+id/displayModeFreq"/>
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                         android:text="@string/meas_time" android:id="@+id/displayModeTime"/>
+                        </RadioGroup>
+                    </LinearLayout>
+                    <LinearLayout android:orientation="vertical" android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_margin="10dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:text="@string/pref_add_check" android:id="@+id/addContrCaption"
+                                  android:layout_margin="5dp" android:textStyle="bold"/>
+                        <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:id="@+id/ccGrp">
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                         android:text="@string/on" android:id="@+id/addContrOn"/>
+                            <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                         android:text="@string/off" android:id="@+id/addContrOff"/>
+                        </RadioGroup>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pref_apply"
+                        android:id="@+id/prefApplyBtn" android:width="100dp" android:layout_margin="5dp"/>
+                <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pref_read"
+                        android:id="@+id/prefReadBtn" android:width="100dp" android:layout_margin="5dp"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/devTimeBlock" android:layout_margin="10dp"
+                    >
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/meas_dev_time_settings"
+                        android:id="@+id/deviceDateCaption" android:layout_margin="5dp" android:textStyle="bold"/>
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    <Button
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/meas_dev_sync"
+                            android:id="@+id/syncDevTimeBtn" android:layout_margin="5dp" android:width="200dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

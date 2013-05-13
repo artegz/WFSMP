@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+        >
+
+    <include layout="@layout/status_row" android:layout_width="fill_parent" android:layout_height="wrap_content"/>
+
+    <view android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          class="edu.spbstu.wfsmp.activity.CompassRoseView" android:id="@+id/compassRoseView"
+          android:adjustViewBounds="false"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" android:id="@+id/devTimeBlock" android:layout_margin="10dp"
+                    >
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/meas_dev_time_settings"
+                        android:id="@+id/deviceDateCaption" android:layout_margin="5dp" android:textStyle="bold"/>
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+                    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                                  android:layout_height="wrap_content" android:id="@+id/devDateRow" android:layout_margin="5dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/meas_dev_date"
+                                  android:id="@+id/devDateCaption" android:layout_marginRight="5dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/devDateValue" android:layout_marginRight="5dp"/>
+                    </LinearLayout>
+                    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                                  android:layout_height="wrap_content" android:id="@+id/devTimeRow"
+                                  android:layout_margin="5dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:text="@string/meas_dev_time" android:id="@+id/devTimeCaption" android:layout_marginRight="5dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/devTimeValue" android:layout_marginRight="5dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/measBlock" android:layout_margin="10dp"
+                    >
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/meas_measurement"
+                        android:id="@+id/deviceStatusCaption" android:layout_margin="5dp" android:textStyle="bold"/>
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content" android:id="@+id/statusRow" android:layout_margin="5dp">
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/meas_status"
+                                    android:id="@+id/statusLabel" android:layout_marginRight="5dp"/>
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/statusValue" android:layout_marginRight="5dp"/>
+                        </LinearLayout>
+                        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                                      android:layout_height="wrap_content" android:id="@+id/velocityRow" android:layout_margin="5dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/meas_velocity"
+                                      android:id="@+id/velocityCaption" android:layout_marginRight="5dp"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                      android:id="@+id/velocityValue" android:layout_marginRight="5dp"/>
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/mps"
+                                    android:id="@+id/velocityUnits"/>
+                        </LinearLayout>
+                        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                                      android:layout_height="wrap_content" android:id="@+id/frequencyRow" android:layout_margin="5dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/meas_frequency"
+                                      android:id="@+id/frequencyCaption" android:layout_marginRight="5dp"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                      android:id="@+id/frequencyValue" android:singleLine="false" android:layout_marginRight="5dp"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/tps"
+                                      android:id="@+id/frequencyUnits"/>
+                        </LinearLayout>
+                        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                                      android:layout_height="wrap_content" android:id="@+id/numTurnsRow" android:layout_margin="5dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/meas_num_turns"
+                                      android:id="@+id/numTurnsCaption" android:layout_marginRight="5dp" android:singleLine="true"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                      android:id="@+id/numTurnsValue" android:layout_marginRight="5dp" android:text="@string/turn"/>
+                        </LinearLayout>
+                        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                                      android:layout_height="wrap_content" android:id="@+id/timeRow" android:layout_margin="5dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/meas_time"
+                                      android:id="@+id/timeCaption" android:layout_marginRight="5dp"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                      android:id="@+id/timeUnits" android:singleLine="false"
+                                      android:layout_marginRight="5dp" android:text="@string/sec"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                      android:id="@+id/timeValue" android:layout_marginRight="5dp"/>
+                        </LinearLayout>
+                        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                                      android:layout_height="wrap_content" android:id="@+id/directionRow"
+                                      android:layout_margin="5dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                      android:text="@string/meas_direction" android:id="@+id/dirCaption"
+                                      android:layout_marginRight="5dp"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                      android:id="@+id/dirValue" android:layout_marginRight="5dp"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                      android:text="@string/degrees" android:id="@+id/dirUnits"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent">
+                    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                                  android:layout_height="wrap_content" android:id="@+id/distanceInputRow"
+                                  android:layout_margin="5dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:text="@string/meas_distance" android:id="@+id/distanceCaption"
+                                  android:layout_marginRight="5dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/distanceUnits" android:layout_marginRight="5dp"
+                                  android:text="@string/meters"/>
+                        <EditText
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/distanceInput" android:layout_margin="5dp"
+                                android:autoText="false" android:singleLine="true" android:numeric="signed|decimal"
+                                android:inputType="number|numberDecimal|numberSigned"
+                                android:linksClickable="false" android:width="180dp"/>
+                    </LinearLayout>
+                    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                                  android:layout_height="wrap_content" android:id="@+id/depthInputRow"
+                                  android:layout_margin="5dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:text="@string/meas_depth" android:id="@+id/depthCaption"
+                                  android:layout_marginRight="5dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/depthUnits" android:layout_marginRight="5dp"
+                                  android:text="@string/meters"/>
+                        <EditText
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/depthInput" android:layout_margin="5dp"
+                                android:singleLine="true" android:numeric="integer|signed|decimal"
+                                android:inputType="number|numberDecimal|numberSigned" android:width="180dp"/>
+                    </LinearLayout>
+                    <Button
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dp"
+                            android:text="@string/meas_write"
+                            android:id="@+id/saveToDbBtn" android:layout_weight="50" android:layout_margin="5dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" android:id="@+id/measControlBlock" android:layout_margin="10dp"
+                    >
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/meas_control"
+                        android:id="@+id/controlCaption" android:layout_margin="5dp" android:textStyle="bold"/>
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+                    <Button
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/meas_start"
+                            android:id="@+id/startMeasBtn"
+                             android:layout_weight="50" android:layout_margin="5dp"/>
+                    <Button
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/meas_stop"
+                            android:id="@+id/stopMeasBtn"
+                            android:layout_weight="50" android:layout_margin="5dp"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" android:id="@+id/dbDataBlock" android:layout_margin="10dp"
+                    >
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/meas_db"
+                        android:id="@+id/measDbCaption" android:textStyle="bold" android:layout_margin="5dp"/>
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+                    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+                                  android:layout_height="wrap_content" android:id="@+id/numRecordsRow"
+                                  android:layout_margin="5dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:text="@string/meas_db_size" android:id="@+id/numRecordsCaption"
+                                  android:layout_marginRight="5dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/numRecordsValue" android:layout_marginRight="5dp"/>
+                    </LinearLayout>
+                    <Button
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/meas_show_db"
+                            android:id="@+id/showDbBtn" android:layout_margin="5dp"/>
+                    <Button
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/meas_export"
+                            android:id="@+id/exportDbBtn" android:layout_margin="5dp"/>
+                    <Button android:layout_width="fill_parent" android:layout_height="wrap_content"
+                            android:text="@string/meas_clearDb" android:id="@+id/clearDb" android:layout_margin="5dp"
+                            android:width="200dp"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent"
+                          android:layout_height="wrap_content" android:id="@+id/devControlBlock"
+                          android:layout_margin="10dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:text="@string/meas_control_dev" android:id="@+id/devControlCaption"
+                          android:layout_margin="5dp" android:textStyle="bold"/>
+                <LinearLayout android:orientation="vertical" android:layout_width="fill_parent"
+                              android:layout_height="wrap_content">
+                    <Button android:layout_width="fill_parent" android:layout_height="wrap_content"
+                            android:text="@string/meas_turn_on_dev" android:id="@+id/devTurnOn" android:layout_weight="50"
+                            android:layout_margin="5dp"/>
+                    <Button android:layout_width="fill_parent" android:layout_height="wrap_content"
+                            android:text="@string/meas_turn_off_dev" android:id="@+id/devTurnOff" android:layout_weight="50"
+                            android:layout_margin="5dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

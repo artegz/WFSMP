@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_measurement"
+          android:title="@string/menu_measurement"/>
+    <item android:id="@+id/menu_preferences"
+          android:title="@string/menu_preferences"/>
+    <item android:id="@+id/menu_info"
+          android:title="@string/menu_info"/>
+    <item android:id="@+id/menu_programming"
+          android:title="@string/menu_programming"/>
+    <item android:id="@+id/disconnect"
+          android:title="@string/disconnect"/>
+
+</menu>

@@ -1,15 +1,14 @@
 package edu.spbstu.wfsmp.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import edu.spbstu.wfsmp.ApplicationContext;
-import edu.spbstu.wfsmp.activity.handlers.ForwardListener;
+import edu.spbstu.wfsmp.ExcelExporter;
 import edu.spbstu.wfsmp.sensor.*;
 
 import java.util.Timer;
@@ -20,14 +19,12 @@ import java.util.TimerTask;
  * Date: 14.10.12
  * Time: 15:04
  */
-public class MeasurementActivity extends Activity {
+public class Measurement2Activity extends AbstractWfsmpActivity {
 
-    public static final String TAG = MeasurementActivity.class.getName();
+    public static final String TAG = Measurement2Activity.class.getName();
     private final static int STATE_CHECK_PERIOD = 2000;
     private Timer refreshTimer;
     private boolean refreshScheduled = false;
-
-    // int d = 0; // todo remove
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,35 +32,28 @@ public class MeasurementActivity extends Activity {
         ApplicationContext.debug(getClass(), "Init controller activity.");
 
         // show view
-        setContentView(R.layout.measurement);
+        setContentView(R.layout.measurement2);
+
+        // create handler to handle GUI events from OnClick listeners
+        final Handler handler = new Handler();
 
         // attach listeners
+
+        // measurement operation
         findViewById(R.id.startMeasBtn).setOnClickListener(new OnMeasurementStartListener());
         findViewById(R.id.stopMeasBtn).setOnClickListener(new OnMeasurementStopListener());
         findViewById(R.id.saveToDbBtn).setOnClickListener(new OnSaveListener());
-        
-        // set default values
-        ((EditText) findViewById(R.id.distanceInput)).setText("0");
-        ((EditText) findViewById(R.id.depthInput)).setText("0");
+
+        // DB operations
+        findViewById(R.id.exportDbBtn).setOnClickListener(new ExportResultsListener(handler));
+        findViewById(R.id.showDbBtn).setOnClickListener(new ForwardListener(ViewResultsActivity.class, this));
+        findViewById(R.id.clearDb).setOnClickListener(new OnClearDbListener());
+
+        // device operations
+        findViewById(R.id.devTurnOn).setOnClickListener(new OnTurnOnListener());
+        findViewById(R.id.devTurnOff).setOnClickListener(new OnTurnOffListener());
 
         ApplicationContext.debug(getClass(), "Controller activity initialized.");
-
-        final CompassRoseView compassRoseView = (CompassRoseView) findViewById(R.id.compassRoseView);
-        final Handler handler = new Handler();
-
-
-        // test compass
-        /*new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        compassRoseView.setDirection(d++);
-                    }
-                });
-            }
-        }, 0, 1000);*/
     }
 
     @Override
@@ -109,6 +99,7 @@ public class MeasurementActivity extends Activity {
             public void run() {
                 ApplicationContext.debug(getClass(), "Updating status rows.");
                 try {
+                    // todo asm: if something else failed - device controller may be unregistered
                     final Status status = ApplicationContext.getInstance().getDeviceController().getStatusOut();
 
                     ApplicationContext.debug(getClass(), "Status bits: " + status.toString());
@@ -120,8 +111,13 @@ public class MeasurementActivity extends Activity {
                         @Override
                         public void run() {
                             try {
+                                // fill current measurement values
                                 fillStatus(ApplicationContext.getInstance().getDeviceController().getCurrentMeasurement());
                                 fillTextView((TextView) findViewById(R.id.statusValue), status.isStarted() ? "started" : "stopped");
+
+                                // fill db size data
+                                final int dbSize = ApplicationContext.getInstance().getDeviceController().getDbSize();
+                                ((TextView) findViewById(R.id.numRecordsValue)).setText(String.valueOf(dbSize));
                             } catch (SensorException e) {
                                 ApplicationContext.handleException(getClass(), e);
                                 throw new AssertionError(e);
@@ -139,34 +135,26 @@ public class MeasurementActivity extends Activity {
     }
 
     private void fillStatus(MeasurementResult measurement) {
+        fillTextView((TextView) findViewById(R.id.devTimeValue), DateFormat.format("hh:mm:ss", measurement.getRealTime()));
+        fillTextView((TextView) findViewById(R.id.devDateValue), DateFormat.format("dd.MM.yyyy", measurement.getRealDate()));
+
         fillTextView((TextView) findViewById(R.id.frequencyValue), measurement.getFrequency());
         fillTextView((TextView) findViewById(R.id.velocityValue), measurement.getVelocity());
-        fillTextView((TextView) findViewById(R.id.dateValue), measurement.getRealDate() + " " + measurement.getRealTime());
         fillTextView((TextView) findViewById(R.id.timeValue), measurement.getMeasTime());
         fillTextView((TextView) findViewById(R.id.numTurnsValue), measurement.getTurns());
+
+        fillTextView((TextView) findViewById(R.id.dirValue), measurement.getDirection());
+
+        ((CompassRoseView) findViewById(R.id.compassRoseView)).setDirection(measurement.getDirection());
+
     }
 
-    private <T> void fillTextView(TextView distanceValueView, T value) {
+    private <T> void fillTextView(TextView valueView, T value) {
         if (value != null) {
-            distanceValueView.setText(String.valueOf(value));
+            valueView.setText(String.valueOf(value));
         } else {
-            distanceValueView.setText("-");
+            valueView.setText("-");
         }
-    }
-
-    private void showMessage(final String message) {
-        Log.i(TAG, message);
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                ((TextView) findViewById(R.id.statusRow)).setText(message);
-            }
-        });
-    }
-
-    @Override
-    public void onBackPressed() {
-        new ForwardListener(MenuActivity.class, this).onClick(null);
     }
 
     private class OnMeasurementStartListener implements View.OnClickListener {
@@ -258,6 +246,68 @@ public class MeasurementActivity extends Activity {
                 } catch (SensorException e) {
                     Log.e(TAG, e.getMessage(), e);
                 }
+            }
+        }
+    }
+
+    private class ExportResultsListener implements View.OnClickListener {
+        private final Handler handler;
+
+        public ExportResultsListener(Handler handler) {
+            this.handler = handler;
+        }
+
+        @Override
+        public void onClick(View v) {
+            try {
+                final String filename = new ExcelExporter().doExportAll();
+                final TextView statusRow = (TextView) findViewById(R.id.statusRow);
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        statusRow.setText("Device database successfully exported into file '" + filename + "'.");
+                    }
+                });
+            } catch (SensorException e) {
+                ApplicationContext.handleException(getClass(), e);
+            }
+        }
+    }
+
+    private class OnClearDbListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            try {
+                ApplicationContext.getInstance().getDeviceController().clearDb();
+                showMessage("DB has been cleared..");
+            } catch (SensorException e) {
+                showMessage("Clear DB failed.");
+                ApplicationContext.handleException(getClass(), e);
+            }
+        }
+    }
+
+    private class OnTurnOnListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            try {
+                ApplicationContext.getInstance().getDeviceController().turnOn();
+            } catch (SensorException e) {
+                showMessage("Turning on failed.");
+                ApplicationContext.handleException(getClass(), e);
+            }
+        }
+    }
+
+    private class OnTurnOffListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            try {
+                ApplicationContext.getInstance().getDeviceController().turnOff();
+            } catch (SensorException e) {
+                showMessage("Turning off failed.");
+                ApplicationContext.handleException(getClass(), e);
             }
         }
     }

@@ -5,7 +5,7 @@ package edu.spbstu.wfsmp.sensor;
  * Date: 13.10.12
  * Time: 22:21
  */
-public interface ProtocolCommandCodes {
+public interface ProtocolCodes {
 
     // implemented commands
     String REQUEST_SERIAL_NUMBER        = "#S";
@@ -42,38 +42,41 @@ public interface ProtocolCommandCodes {
     String REQUEST_CLEAR_DB             = "#c";
     String RESPONSE_CLEAR_DB            = "*c";
 
-    String a = "#N/r/n"; // db rows count
-    String a1 = "#wllldd/r/n"; // write current
-    // "#c/r/n"  clear db
+    String REQUEST_INF_STRING           = "#H";
+    String RESPONSE_INF_STRING          = "*H";
 
     // set whirwind type - "#md/r/n"
     // set time - "#Thhmmss/r/n"
     // set date - "#DddMMyy/r/n"
     // set display "#dm/r/n"
 
+    String REQUEST_TURN_OFF             = "#e";
 
+    String REQUEST_CHANGE_SOUND         = "#z"; // "#zS/r/n", S=0,1
+    String RESPONSE_CHANGE_SOUND        = "*z"; // "#zS/r/n", S=0,1
 
+    String REQUEST_CHANGE_CONTACT_CONTROL   = "#k";
+    String RESPONSE_CHANGE_CONTACT_CONTROL  = "*k";
+
+    String REQUEST_WRITE_EEPROM_BYTE    = "#P"; // "#Paadd/r/n" - "*Paadd/r/n"
+    String RESPONSE_WRITE_EEPROM_BYTE   = "*P"; // "#Paadd/r/n" - "*Paadd/r/n"
+
+    String REQUEST_READ_EEPROM_BYTE     = "#R";  // "#Raa/r/n" - "*Raadd/r/n "
+    String RESPONSE_READ_EEPROM_BYTE    = "*R";  // "#Raa/r/n" - "*Raadd/r/n "
+
+    String REQUEST_CHANGE_WH_TYPE       = "#m"; // "#mS/r/n", 0-1:20;1-1:1;2-70:3-120
+    String RESPONSE_CHANGE_WH_TYPE      = "*m"; // "#mS/r/n", 0-1:20;1-1:1;2-70:3-120
+
+    String REQUEST_CHANGE_DISP_MODE     = "#d"; // "#dS/r/n", 0-time;1-turns;2-freq;3-vel
+    String RESPONSE_CHANGE_DISP_MODE    = "*d"; // "#dS/r/n", 0-time;1-turns;2-freq;3-vel
+
+    String REQUEST_SET_DATE             = "#D"; // #DddMMyy/r/n
+    String RESPONSE_SET_DATE            = "*D"; // #DddMMyy/r/n
+
+    String REQUEST_SET_TIME             = "#T"; // #Thhmmss/r/n
+    String RESPONSE_SET_TIME            = "*T"; // #Thhmmss/r/n
+
+    String REQUEST_U_BATTERY            = "#U";
 
     String ERROR                        = "*?\r\n";
-
-
-    // not implemented commands
-    String REQUEST_EEPROM_DATA_OUT      = "#R";
-
-    String REQUEST_NUM_RECORDS_OUT      = "#N";
-    String REQUEST_WRITE_RECORD         = "#w";
-    String REQUEST_CLEAR                = "#c";
-    String REQUEST_SET_MODE             = "#m";
-    String REQUEST_SET_DISPLAY          = "#d";
-
-    String REQUEST_SOUND_SET            = "#z"; // 1|0
-    String REQUEST_GROUND_SET           = "#k"; // 1|0
-    String REQUEST_SOFT_RESET           = "#r";
-    String REQUEST_WRITE_BYTE           = "#P";
-    String REQUEST_SLEEP                = "#e";
-    String REQUEST_PROMT_OUTPUT         = "#H";
-    String REQUEST_NUMBER_VERSIE_OUTPUT = "#V";
-
-
-    // String NO_RESPONSE              = "NO_RESPONSE_FAKE_COMMAND";
 }

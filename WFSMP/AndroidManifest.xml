@@ -15,7 +15,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="MeasurementActivity"
+        <activity android:name="Measurement2Activity"
                   android:label="@string/app_name">
         </activity>
         <activity android:name="ShowInfoActivity"
@@ -30,7 +30,7 @@
                   android:label="@string/app_name"
                 >
         </activity>
-        <activity android:name=".MenuActivity"
+        <activity android:name="PreferencesActivity"
                   android:label="@string/app_name"
                 >
         </activity>

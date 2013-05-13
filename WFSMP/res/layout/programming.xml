@@ -6,5 +6,247 @@
               android:layout_height="fill_parent">
 
     <include layout="@layout/status_row" android:layout_width="fill_parent" android:layout_height="wrap_content"/>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prog_linear_table"
+                android:id="@+id/linTableCaption" android:textStyle="bold" android:layout_margin="5dp"/>
+        <!--<CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prog_write_enable"
+                android:id="@+id/linTableWeChBox"/>-->
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pref_v_70"
+                        android:id="@+id/linTab70mmCaption"/>
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content" android:id="@+id/linearLayout11">
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/meas_frequency"
+                                android:id="@+id/linTab70mmFreqCaption" android:width="100dp"/>
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/meas_velocity"
+                                android:id="@+id/linTab70mmVelCaption" android:width="100dp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        <EditText
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/freq70mm1" android:width="100dp" android:numeric="integer"/>
+                        <EditText
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/vel70mm1" android:width="100dp" android:numeric="integer"/>
+                    </LinearLayout>
+                    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content" android:id="@+id/linearLayout">
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/freq70mm2" android:width="100dp" android:numeric="integer"/>
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/vel70mm2" android:width="100dp" android:numeric="integer"/>
+                    </LinearLayout>
+                    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content" android:id="@+id/linearLayout1">
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/freq70mm3" android:width="100dp" android:numeric="integer"/>
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/vel70mm3" android:width="100dp" android:numeric="integer"/>
+                    </LinearLayout>
+                    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content" android:id="@+id/linearLayout2">
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/freq70mm4" android:width="100dp" android:numeric="integer"/>
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/vel70mm4" android:width="100dp" android:numeric="integer"/>
+                    </LinearLayout>
+                    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content" android:id="@+id/linearLayout3">
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/freq70mm5" android:width="100dp" android:numeric="integer"/>
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/vel70mm5" android:width="100dp" android:numeric="integer"/>
+                    </LinearLayout>
+                    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content" android:id="@+id/linearLayout4">
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/freq70mm6" android:width="100dp" android:numeric="integer"/>
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/vel70mm6" android:width="100dp" android:numeric="integer"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <Space
+                    android:layout_width="20px"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/space"/>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/prog_wh_120"
+                        android:id="@+id/linTab120mmCaption"/>
+                <LinearLayout android:orientation="vertical" android:layout_width="wrap_content"
+                              android:layout_height="wrap_content" android:id="@+id/linearLayout10">
+                    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content" android:id="@+id/linearLayout12">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:text="@string/meas_frequency" android:id="@+id/linTab120mmFreqCaption"
+                                  android:width="100dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:text="@string/meas_velocity" android:id="@+id/linTab120mmVelCaption"
+                                  android:width="100dp"/>
+                    </LinearLayout>
+                    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content">
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/freq120mm1" android:width="100dp" android:numeric="integer"/>
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/vel120mm1" android:width="100dp" android:numeric="integer"/>
+                    </LinearLayout>
+                    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content" android:id="@+id/linearLayout5">
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/freq120mm2" android:width="100dp" android:numeric="integer"/>
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/vel120mm2" android:width="100dp" android:numeric="integer"/>
+                    </LinearLayout>
+                    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content" android:id="@+id/linearLayout6">
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/freq120mm3" android:width="100dp" android:numeric="integer"/>
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/vel120mm3" android:width="100dp" android:numeric="integer"/>
+                    </LinearLayout>
+                    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content" android:id="@+id/linearLayout7">
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/freq120mm4" android:width="100dp" android:numeric="integer"/>
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/vel120mm4" android:width="100dp" android:numeric="integer"/>
+                    </LinearLayout>
+                    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content" android:id="@+id/linearLayout8">
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/freq120mm5" android:width="100dp" android:numeric="integer"/>
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/vel120mm5" android:width="100dp" android:numeric="integer"/>
+                    </LinearLayout>
+                    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content" android:id="@+id/linearLayout9">
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/freq120mm6" android:width="100dp" android:numeric="integer"/>
+                        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                  android:id="@+id/vel120mm6" android:width="100dp" android:numeric="integer"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prog_read"
+                    android:id="@+id/linTableReadBtn" android:width="200dp"/>
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prog_write"
+                    android:id="@+id/libTableWriteBtn" android:width="200dp"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prog_dev_info"
+                android:id="@+id/progDevInfoCaption" android:textStyle="bold" android:layout_margin="5dp"/>
+        <!--<CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prog_write_enable"
+                android:id="@+id/devInfoWeChkBox" android:singleLine="false"/>-->
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/prog_serial_number"
+                        android:id="@+id/progSerialNumberCaption"/>
+                <EditText
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/progSerialNumberValue" android:width="100dp"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/prog_software_verison"
+                        android:id="@+id/progSoftwareVersionCaption"/>
+                <EditText
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/progSoftVersion" android:width="100dp"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prog_read"
+                    android:id="@+id/progDevInfoReadBtn" android:width="200dp"/>
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prog_write"
+                    android:id="@+id/progDevInfoWriteBtn" android:width="200dp"/>
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

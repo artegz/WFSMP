@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WFSMP</string>
+
+    <!-- Common caption -->
+    <string name="mps">м/с</string>
+    <string name="tps">об/с</string>
+    <string name="turn">об</string>
+    <string name="sec">с</string>
+    <string name="meters">м</string>
+
+    <!-- Measurement screen captions -->
+
+    <string name="meas_measurement">Измерение</string>
+
+    <string name="meas_status">Статус</string>
+    <string name="meas_velocity">Скорость</string>
+    <string name="meas_frequency">Частота</string>
+    <string name="meas_num_turns">Обороты</string>
+    <string name="meas_time">Время</string>
+    <string name="meas_direction">Направление</string>
+    <string name="degrees">град</string>
+
+    <string name="meas_distance">Дистанция</string>
+    <string name="meas_depth">Глубина</string>
+    <string name="meas_write">Записать</string>
+
+    <string name="meas_dev_time_settings">Время прибора</string>
+
+    <string name="meas_dev_date">Дата</string>
+    <string name="meas_dev_time">Время</string>
+    <string name="meas_dev_sync">Синхронизовать</string>
+
+    <string name="meas_db">База данных прибора</string>
+
+    <string name="meas_db_size">Количество записей</string>
+    <string name="meas_show_db">Показать</string>
+    <string name="meas_export">В файл</string>
+
+    <string name="meas_control">Управление измерением</string>
+    <string name="meas_start">Запустить</string>
+    <string name="meas_stop">Остановить</string>
+
+    <string name="meas_control_dev">Управление прибором</string>
+    <string name="meas_turn_off_dev">Выключить прибор</string>
+    <string name="meas_turn_on_dev">Включить прибор</string>
+
+    <!-- Menu captions -->
+
+    <string name="menu_measurement">Измерение</string>
+    <string name="menu_info">Информация о приборе</string>
+    <string name="menu_programming">Программирование</string>
+    <string name="menu_turn_on">Включить прибор</string>
+    <string name="menu_turn_off">Выключить прибор</string>
+
+    <string name="connect">Подключиться</string>
+    <string name="disconnect">Отключиться</string>
+
+</resources>

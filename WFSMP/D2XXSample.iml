@@ -42,7 +42,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/annotations.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/annotations.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -50,6 +50,7 @@
     </orderEntry>
     <orderEntry type="library" name="d2xx" level="project" />
     <orderEntry type="library" name="jxl" level="project" />
+    <orderEntry type="library" name="annotations" level="project" />
   </component>
 </module>
 

@@ -2,47 +2,59 @@ package edu.spbstu.wfsmp.sensor;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
- * User: artegz
- * Date: 14.10.12
- * Time: 0:53
+ * User: Artegz
+ * Date: 03.05.13
+ * Time: 21:41
  */
 public class LinearTable {
 
     @NotNull
-    private short[][] linearTable;
+    private List<Point> points70mm = new ArrayList<Point>(6);
 
     @NotNull
-    private String tableId;
+    private List<Point> points120mm = new ArrayList<Point>(6);
 
-    public static LinearTable createLinearTable(@NotNull short[] frequencyValues,
-                                                @NotNull short[] speedValues,
-                                                @NotNull String tableId) {
-        // preconditions
-        if (frequencyValues.length < 2 && frequencyValues.length != speedValues.length) {
-            throw new IllegalArgumentException("Number of frequency values and speed values should be same and must be greeter then 2.");
+    @NotNull
+    public List<Point> getPoints70mm() {
+        return points70mm;
+    }
+
+    @NotNull
+    public List<Point> getPoints120mm() {
+        return points120mm;
+    }
+
+    public void addPoint70mm(@NotNull Point point) {
+        points70mm.add(point);
+    }
+
+    public void addPoint120mm(@NotNull Point point) {
+        points120mm.add(point);
+    }
+
+    public static class Point {
+
+        private int frequency;
+
+        private int velocity;
+
+        public Point(int frequency, int velocity) {
+            this.frequency = frequency;
+            this.velocity = velocity;
         }
 
-        final int numValues = frequencyValues.length;
-        final short[][] table = new short[2][numValues];
+        public int getVelocity() {
+            return velocity;
+        }
 
-        System.arraycopy(frequencyValues, 0, table[0], 0, numValues);
-        System.arraycopy(speedValues, 0, table[1], 0, numValues);
-
-        return new LinearTable(table, tableId);
+        public int getFrequency() {
+            return frequency;
+        }
     }
 
-    private LinearTable(@NotNull short[][] linearTable, @NotNull String tableId) {
-        this.linearTable = linearTable;
-    }
-
-    @NotNull
-    public short[][] getLinearTable() {
-        return linearTable;
-    }
-
-    @NotNull
-    public String getTableId() {
-        return tableId;
-    }
 }

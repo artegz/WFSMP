@@ -18,31 +18,26 @@ public class CompassRoseView extends ImageView {
 
     private int direction = 0;
 
+    @SuppressWarnings("UnusedDeclaration")
     public CompassRoseView(Context context) {
         super(context);
-
-        paint = new Paint();
-        paint.setColor(Color.WHITE);
-        paint.setStrokeWidth(2);
-        paint.setStyle(Paint.Style.STROKE);
-
-        this.setImageResource(R.drawable.compassrose_d);
+        init();
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public CompassRoseView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        paint = new Paint();
-        paint.setColor(Color.WHITE);
-        paint.setStrokeWidth(2);
-        paint.setStyle(Paint.Style.STROKE);
-
-        this.setImageResource(R.drawable.compassrose_d);
+        init();
     }
 
+    // all constructors are required to use it as layout component
+    @SuppressWarnings("UnusedDeclaration")
     public CompassRoseView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        init();
+    }
 
+    private void init() {
         paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setStrokeWidth(2);

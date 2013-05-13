@@ -1,14 +1,9 @@
 package edu.spbstu.wfsmp.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TextView;
 import edu.spbstu.wfsmp.ApplicationContext;
-import edu.spbstu.wfsmp.ApplicationProperties;
-import edu.spbstu.wfsmp.activity.handlers.ForwardListener;
-import edu.spbstu.wfsmp.sensor.DeviceController;
-import edu.spbstu.wfsmp.sensor.DeviceControllerImpl;
 import edu.spbstu.wfsmp.sensor.SensorException;
 
 /**
@@ -16,7 +11,7 @@ import edu.spbstu.wfsmp.sensor.SensorException;
  * Date: 28.10.12
  * Time: 19:14
  */
-public class ShowInfoActivity extends Activity {
+public class ShowInfoActivity extends AbstractWfsmpActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +27,16 @@ public class ShowInfoActivity extends Activity {
             public void run() {
                 try {
                     final String serialNumber = ApplicationContext.getInstance().getDeviceController().getSerialNumber();
+                    final String softwareVersion = ApplicationContext.getInstance().getDeviceController().getSoftwareVersion();
 
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            final TextView textView = (TextView) findViewById(R.id.serialNumberView);
-                            textView.setText(serialNumber);
+                            final TextView textView1 = (TextView) findViewById(R.id.serialNumberView);
+                            textView1.setText(serialNumber);
+
+                            final TextView textView2 = (TextView) findViewById(R.id.softwareVersionView);
+                            textView2.setText(softwareVersion);
                         }
                     });
                 } catch (SensorException e) {
@@ -56,11 +55,6 @@ public class ShowInfoActivity extends Activity {
         }).start();
 
         ApplicationContext.debug(getClass(), "Show info activity initialized.");
-    }
-
-    @Override
-    public void onBackPressed() {
-        new ForwardListener(MenuActivity.class, this).onClick(null);
     }
 
 }

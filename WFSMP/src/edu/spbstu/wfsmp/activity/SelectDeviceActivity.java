@@ -15,14 +15,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import edu.spbstu.wfsmp.ApplicationContext;
-import edu.spbstu.wfsmp.ApplicationProperties;
-import edu.spbstu.wfsmp.activity.handlers.DisconnectListener;
-import edu.spbstu.wfsmp.activity.handlers.ForwardListener;
 import edu.spbstu.wfsmp.driver.Device;
 import edu.spbstu.wfsmp.driver.DeviceDescriptor;
 import edu.spbstu.wfsmp.driver.DeviceException;
 import edu.spbstu.wfsmp.driver.DeviceProvider;
-import edu.spbstu.wfsmp.sensor.DeviceControllerImpl;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -46,6 +42,10 @@ public class SelectDeviceActivity extends Activity {
 
     @NotNull
     private ArrayAdapter<String> devicesViewAdapter;
+
+    private final UsbDeviceAttachedBroadcastReceiver usbDeviceAttachedBroadcastReceiver = new UsbDeviceAttachedBroadcastReceiver();
+    private final UsbDeviceDetachedBroadcastReceiver usbDeviceDetachedBroadcastReceiver = new UsbDeviceDetachedBroadcastReceiver();
+    private final UsbDevicePermissionGrantedBroadcastReceiver usbDevicePermissionGrantedBroadcastReceiver = new UsbDevicePermissionGrantedBroadcastReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,16 +89,17 @@ public class SelectDeviceActivity extends Activity {
     }
 
     private void registerUsbBroadcastReceivers() {
+        // todo asm: calls multiple times, check
         ApplicationContext.debug(getClass(), "Registering usb broadcast receiver.");
 
         // register usb device attached event receiver
-        registerReceiver(new UsbDeviceAttachedBroadcastReceiver(), new IntentFilter(UsbManager.ACTION_USB_DEVICE_ATTACHED));
+        registerReceiver(usbDeviceAttachedBroadcastReceiver, new IntentFilter(UsbManager.ACTION_USB_DEVICE_ATTACHED));
 
         // register usb device detached event receiver
-        registerReceiver(new UsbDeviceDetachedBroadcastReceiver(), new IntentFilter(UsbManager.ACTION_USB_DEVICE_DETACHED));
+        registerReceiver(usbDeviceDetachedBroadcastReceiver, new IntentFilter(UsbManager.ACTION_USB_DEVICE_DETACHED));
 
         // register usb device permission received receiver
-        registerReceiver(new UsbDevicePermissionGrantedBroadcastReceiver(), new IntentFilter(ACTION_USB_PERMISSION));
+        registerReceiver(usbDevicePermissionGrantedBroadcastReceiver, new IntentFilter(ACTION_USB_PERMISSION));
     }
 
     @Override
@@ -125,10 +126,10 @@ public class SelectDeviceActivity extends Activity {
     }
 
     private void reloadActivityDeviceList(Context context, DeviceProvider deviceProvider) throws DeviceException {
-        ApplicationContext.debug(getClass(), "Access to USB device was granted.");
+        ApplicationContext.debug(SelectDeviceActivity.class, "Access to USB device was granted.");
 
         // reload list of connected devices
-        ApplicationContext.debug(getClass(), "Reloading list of connected devices.");
+        ApplicationContext.debug(SelectDeviceActivity.class, "Reloading list of connected devices.");
         deviceProvider.reloadDeviceList(context);
 
         // receive list of connected devices
@@ -138,7 +139,7 @@ public class SelectDeviceActivity extends Activity {
         reloadDeviceDescriptors(connectedDevices);
 
         // update device list on GUI
-        ApplicationContext.debug(getClass(), "Updating list of connected devices on GUI.");
+        ApplicationContext.debug(SelectDeviceActivity.class, "Updating list of connected devices on GUI.");
         reloadDeviceListInGui();
     }
 
@@ -206,16 +207,11 @@ public class SelectDeviceActivity extends Activity {
             try {
                 final Device device = driverManager.openDevice(deviceDescriptor, SelectDeviceActivity.this);
 
-                // create controller for connected device
-                final DeviceControllerImpl deviceController = new DeviceControllerImpl(device);
-
-                // register controller in application context
-                ApplicationContext.getInstance().set(ApplicationProperties.CONNECTED_DEVICE, device);
-                ApplicationContext.getInstance().set(ApplicationProperties.DEVICE_CONTROLLER, deviceController);
+                ApplicationContext.registerDevice(device);
 
                 ApplicationContext.debug(getClass(), "Device connected.");
                 ApplicationContext.debug(getClass(), "Forwarding activity controller activity.");
-                startActivity(new Intent(SelectDeviceActivity.this.getBaseContext(), MenuActivity.class));
+                startActivity(new Intent(SelectDeviceActivity.this.getBaseContext(), Measurement2Activity.class));
             } catch (DeviceException e) {
                 ApplicationContext.handleException(getClass(), e);
             }
@@ -249,7 +245,7 @@ public class SelectDeviceActivity extends Activity {
                 try {
                     reloadActivityDeviceList(context, ApplicationContext.getInstance().getDeviceManager());
 
-                    DisconnectListener.disconnect();
+                    ActivityUtils.disconnect();
                     new ForwardListener(SelectDeviceActivity.class, SelectDeviceActivity.this).onClick(null);
                 } catch (DeviceException e) {
                     ApplicationContext.handleException(getClass(), e);
@@ -274,7 +270,7 @@ public class SelectDeviceActivity extends Activity {
                     if (permissionGranted) {
                         reloadActivityDeviceList(context, ApplicationContext.getInstance().getDeviceManager());
                     } else {
-                        ApplicationContext.debug(SelectDeviceActivity.this.getClass(), "Access to USB device was denied.");
+                        ApplicationContext.debug(getClass(), "Access to USB device was denied.");
                     }
                 } catch (DeviceException e) {
                     ApplicationContext.handleException(getClass(), e);

@@ -1,7 +1,10 @@
-package edu.spbstu.wfsmp.sensor;
+package edu.spbstu.wfsmp;
 
 import android.os.Environment;
 import edu.spbstu.wfsmp.ApplicationContext;
+import edu.spbstu.wfsmp.sensor.MeasurementResult;
+import edu.spbstu.wfsmp.sensor.SensorException;
+import edu.spbstu.wfsmp.sensor.Status;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.write.*;
@@ -60,7 +63,7 @@ public class ExcelExporter {
                 } else {
                     writeCell(8, 2 + i, "-", false, sheet);
                 }
-                writeCell(9, 2 + i, String.valueOf(measurementResult.getRealDate() + " " + measurementResult.getRealTime()), false, sheet);
+                writeCell(9, 2 + i, MeasurementResult.formatDateTime(measurementResult), false, sheet);
             }
 
             workbook.write();

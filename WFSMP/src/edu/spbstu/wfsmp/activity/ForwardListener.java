@@ -1,12 +1,9 @@
-package edu.spbstu.wfsmp.activity.handlers;
+package edu.spbstu.wfsmp.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
-import edu.spbstu.wfsmp.ApplicationContext;
-import edu.spbstu.wfsmp.activity.ShowInfoActivity;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -20,17 +17,25 @@ public class ForwardListener implements View.OnClickListener {
     private final Class<? extends Activity> to;
 
     @NotNull
+    //private final Context baseContext;
     private final Activity from;
 
     public ForwardListener(@NotNull Class<? extends Activity> to, @NotNull Activity from) {
         this.to = to;
         this.from = from;
+        //this.baseContext = this.from.getBaseContext();
     }
 
     @Override
     public void onClick(View view) {
         // ApplicationContext.debug(getClass(), "Dev info button clicked.");
+        forwardTo();
+    }
+
+    public void forwardTo() {
         Log.i(ForwardListener.class.getName(), "Starting " + to.getName() + " activity.");
-        from.startActivity(new Intent(from.getBaseContext(), to));
+        final Intent intent = new Intent(from.getBaseContext(), to);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        from.startActivity(intent);
     }
 }

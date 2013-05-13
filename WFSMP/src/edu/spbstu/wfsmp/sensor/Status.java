@@ -1,15 +1,14 @@
 package edu.spbstu.wfsmp.sensor;
 
+import edu.spbstu.wfsmp.WfsmpUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.BitSet;
 
 /**
-* Created with IntelliJ IDEA.
 * User: Artegz
 * Date: 01.04.13
 * Time: 18:29
-* To change this template use File | Settings | File Templates.
 */
 public final class Status {
 
@@ -17,7 +16,7 @@ public final class Status {
     private BitSet bitSet;
 
     public Status(byte b) {
-        this.bitSet = DeviceControllerImpl.toBitSet(b);
+        this.bitSet = WfsmpUtils.toBitSet(b);
     }
 
     public boolean isSensEnable() {
@@ -62,20 +61,6 @@ public final class Status {
         } else {
             return WhirligigType.type_1_20;
         }
-    }
-
-    public static enum IndicationMode {
-        measTime,
-        turnNum,
-        frequency,
-        velocity
-    }
-
-    public static enum WhirligigType {
-        type_1_20,
-        type_1_1,
-        type_d_70mm,
-        type_d_120mm
     }
 
     @Override

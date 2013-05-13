@@ -1,4 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WFSMP</string>
+
+    <!-- Common captions -->
+
+    <string name="mps">m/s</string>
+    <string name="tps">t/s</string>
+    <string name="turn">t</string>
+    <string name="sec">s</string>
+    <string name="degrees">deg</string>
+    <string name="meters">m</string>
+
+    <!-- Measurement screen captions -->
+
+    <string name="meas_measurement">Measurement</string>
+
+    <string name="meas_status">Status</string>
+    <string name="meas_velocity">Velocity</string>
+    <string name="meas_frequency">Frequency</string>
+    <string name="meas_num_turns">Turns number</string>
+    <string name="meas_time">Time</string>
+    <string name="meas_direction">Direction</string>
+
+    <string name="meas_distance">Distance</string>
+    <string name="meas_depth">Depth</string>
+    <string name="meas_write">Write</string>
+
+    <string name="meas_dev_time_settings">Device time</string>
+
+    <string name="meas_dev_date">Date</string>
+    <string name="meas_dev_time">Time</string>
+    <string name="meas_dev_sync">Synchronize</string>
+
+    <string name="meas_db">Database</string>
+
+    <string name="meas_db_size">Records number</string>
+    <string name="meas_show_db">Show</string>
+    <string name="meas_export">Export</string>
+
+    <string name="meas_control">Control</string>
+    <string name="meas_start">Start</string>
+    <string name="meas_stop">Stop</string>
+
+    <string name="meas_control_dev">Device control</string>
+    <string name="meas_turn_off_dev">Turn off</string>
+    <string name="meas_turn_on_dev">Turn on</string>
+
+    <!-- Menu captions -->
+
+    <string name="menu_measurement">Measurement</string>
+    <string name="menu_info">Device info</string>
+    <string name="menu_programming">Programming</string>
+    <string name="menu_turn_on">Turn on device</string>
+    <string name="menu_turn_off">Turn off device</string>
+
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+
+    <!-- Messages -->
+    <!--todo asm: translate-->
+
+    <string name="msg_none"> </string>
+    <string name="msg_select_dev">Select device to connect</string>
+
+    <string name="pref_apply">Apply</string>
+
+    <string name="pref_sound">Sound</string>
+    <string name="pref_add_check">Contact control</string>
+    <string name="pref_psv_mode">PSV Mode</string>
+    <string name="pref_psv_display">Display Mode</string>
+
+    <string name="pref_v_120">120mm</string>
+    <string name="pref_v_70">70mm</string>
+    <string name="pref_1_1">1:1</string>
+    <string name="pref_1_20">1:20</string>
+
+    <string name="on">On</string>
+    <string name="off">Off</string>
+
+    <string name="loading">Loading…</string>
+
+    <string name="info_serial_number">Serial number</string>
+    <string name="info_software_version">Software version</string>
+
+    <string name="menu_preferences">Preferences</string>
+
+    <string name="prog_write_enable">Write enabled</string>
+    <string name="prog_read">Read</string>
+    <string name="prog_write">Write</string>
+    <string name="prog_serial_number">Serial number</string>
+    <string name="prog_software_verison">Software version</string>
+    <string name="prog_linear_table">Linear table</string>
+    <string name="prog_dev_info">Device info</string>
+
+    <string name="prog_wh_70">70mm</string>
+    <string name="prog_wh_120">120mm</string>
+
+    <string name="meas_clearDb">Clear DB</string>
+
+    <string name="pref_read">Read</string>
+
 </resources>

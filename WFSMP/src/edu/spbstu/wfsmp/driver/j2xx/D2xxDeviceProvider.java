@@ -27,24 +27,24 @@ public class D2xxDeviceProvider implements DeviceProvider {
     static {
         // configure our port
         // reset to UART mode for 232 devices
-        defaultConfiguration.put(D2xxParameter.Param.BIT_MODE_MASK, (byte) 0);
-        defaultConfiguration.put(D2xxParameter.Param.BIT_MODE_MODE, D2xxManager.FT_BITMODE_RESET);
+        defaultConfiguration.put(D2xxDeviceParam.BIT_MODE_MASK, (byte) 0);
+        defaultConfiguration.put(D2xxDeviceParam.BIT_MODE_MODE, D2xxManager.FT_BITMODE_RESET);
 
         // set 9600 baud
-        defaultConfiguration.put(D2xxParameter.Param.BAUD_RATE, 9600);
+        defaultConfiguration.put(D2xxDeviceParam.BAUD_RATE, 9600);
 
         // set 8 data bits, 1 stop bit, no parity
-        defaultConfiguration.put(D2xxParameter.Param.DATA_DATA_BITS, D2xxManager.FT_DATA_BITS_8);
-        defaultConfiguration.put(D2xxParameter.Param.DATA_PARITY_BITS, D2xxManager.FT_PARITY_NONE);
-        defaultConfiguration.put(D2xxParameter.Param.DATA_STOP_BITS, D2xxManager.FT_STOP_BITS_1);
+        defaultConfiguration.put(D2xxDeviceParam.DATA_DATA_BITS, D2xxManager.FT_DATA_BITS_8);
+        defaultConfiguration.put(D2xxDeviceParam.DATA_PARITY_BITS, D2xxManager.FT_PARITY_NONE);
+        defaultConfiguration.put(D2xxDeviceParam.DATA_STOP_BITS, D2xxManager.FT_STOP_BITS_1);
 
         // set no flow control
-        defaultConfiguration.put(D2xxParameter.Param.FLOW_CONTROL, D2xxManager.FT_FLOW_NONE);
-        defaultConfiguration.put(D2xxParameter.Param.FLOW_XON, (byte)0x11);
-        defaultConfiguration.put(D2xxParameter.Param.FLOW_XOFF, (byte)0x13);
+        defaultConfiguration.put(D2xxDeviceParam.FLOW_CONTROL, D2xxManager.FT_FLOW_NONE);
+        defaultConfiguration.put(D2xxDeviceParam.FLOW_XON, (byte)0x11);
+        defaultConfiguration.put(D2xxDeviceParam.FLOW_XOFF, (byte)0x13);
 
         // set latency timer to 16ms
-        defaultConfiguration.put(D2xxParameter.Param.LATENCY_TIMER, (byte)16);
+        defaultConfiguration.put(D2xxDeviceParam.LATENCY_TIMER, (byte)16);
 
         // set a read timeout of 5s
         /*defaultConfiguration.put(D2xxParameter.Param.READ_TIMEOUT, 50);
@@ -168,20 +168,20 @@ public class D2xxDeviceProvider implements DeviceProvider {
     }
 
     private void configure(@NotNull FT_Device ftDevice, @NotNull Map<String, Object> configuration) throws DeviceException {
-        final Byte bitMode = (Byte) configuration.get(D2xxParameter.Param.BIT_MODE_MODE);
-        final Integer baudRate = (Integer) configuration.get(D2xxParameter.Param.BAUD_RATE);
-        final Byte dataBits = (Byte) configuration.get(D2xxParameter.Param.DATA_DATA_BITS);
-        final Byte stopBits = (Byte) configuration.get(D2xxParameter.Param.DATA_STOP_BITS);
-        final Byte parity = (Byte) configuration.get(D2xxParameter.Param.DATA_PARITY_BITS);
-        final Short flowControl = (Short) configuration.get(D2xxParameter.Param.FLOW_CONTROL);
-        final Byte xon = (Byte) configuration.get(D2xxParameter.Param.FLOW_XON);
-        final Byte xoff = (Byte) configuration.get(D2xxParameter.Param.FLOW_XOFF);
-        final Byte latency = (Byte) configuration.get(D2xxParameter.Param.LATENCY_TIMER);
-        final Integer readTimeout = (Integer) configuration.get(D2xxParameter.Param.READ_TIMEOUT);
-        final Integer writeTimeout = (Integer) configuration.get(D2xxParameter.Param.WRITE_TIMEOUT);
+        final Byte bitMode = (Byte) configuration.get(D2xxDeviceParam.BIT_MODE_MODE);
+        final Integer baudRate = (Integer) configuration.get(D2xxDeviceParam.BAUD_RATE);
+        final Byte dataBits = (Byte) configuration.get(D2xxDeviceParam.DATA_DATA_BITS);
+        final Byte stopBits = (Byte) configuration.get(D2xxDeviceParam.DATA_STOP_BITS);
+        final Byte parity = (Byte) configuration.get(D2xxDeviceParam.DATA_PARITY_BITS);
+        final Short flowControl = (Short) configuration.get(D2xxDeviceParam.FLOW_CONTROL);
+        final Byte xon = (Byte) configuration.get(D2xxDeviceParam.FLOW_XON);
+        final Byte xoff = (Byte) configuration.get(D2xxDeviceParam.FLOW_XOFF);
+        final Byte latency = (Byte) configuration.get(D2xxDeviceParam.LATENCY_TIMER);
+        final Integer readTimeout = (Integer) configuration.get(D2xxDeviceParam.READ_TIMEOUT);
+        final Integer writeTimeout = (Integer) configuration.get(D2xxDeviceParam.WRITE_TIMEOUT);
 
         if (bitMode != null) {
-            ftDevice.setBitMode((Byte) configuration.get(D2xxParameter.Param.BIT_MODE_MASK), bitMode);
+            ftDevice.setBitMode((Byte) configuration.get(D2xxDeviceParam.BIT_MODE_MASK), bitMode);
         }
         if (baudRate != null) {
             ftDevice.setBaudRate(baudRate);

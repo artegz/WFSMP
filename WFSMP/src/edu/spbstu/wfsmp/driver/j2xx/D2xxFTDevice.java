@@ -12,7 +12,7 @@ import java.io.IOException;
  * Date: 14.10.12
  * Time: 18:39
  */
-class D2xxFTDevice implements Device {
+public class D2xxFTDevice implements Device {
 
     @NotNull
     private final FT_Device driver;
@@ -71,4 +71,8 @@ class D2xxFTDevice implements Device {
         }
     }
 
+    @NotNull
+    public FT_Device getNativeDriver() {
+        return driver;
+    }
 }

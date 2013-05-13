@@ -1,13 +1,11 @@
 package edu.spbstu.wfsmp.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.*;
 import edu.spbstu.wfsmp.ApplicationContext;
-import edu.spbstu.wfsmp.activity.handlers.ForwardListener;
 import edu.spbstu.wfsmp.sensor.MeasurementResult;
 import edu.spbstu.wfsmp.sensor.SensorException;
 import edu.spbstu.wfsmp.sensor.Status;
@@ -19,7 +17,7 @@ import java.util.List;
  * Date: 14.10.12
  * Time: 15:05
  */
-public class ViewResultsActivity extends Activity {
+public class ViewResultsActivity extends AbstractWfsmpActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +66,7 @@ public class ViewResultsActivity extends Activity {
                                 } else {
                                     newDataRow.addView(createCell("-", newDataRow.getContext()));
                                 }
-                                newDataRow.addView(createCell(measurementResult.getRealDate() + " " + measurementResult.getRealTime(), newDataRow.getContext()));
+                                newDataRow.addView(createCell(MeasurementResult.formatDateTime(measurementResult), newDataRow.getContext()));
 
                                 table.addView(newDataRow);
                             }
@@ -90,16 +88,6 @@ public class ViewResultsActivity extends Activity {
                 }
             }
         }).start();
-
-
-        /*final ListView view = (ListView) findViewById(R.id.resultsTable);
-
-        // set adapter which provide device list
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,
-                results);
-
-        view.setAdapter(arrayAdapter);*/
     }
 
     private TextView createCell(Object value, Context context) {
@@ -109,8 +97,4 @@ public class ViewResultsActivity extends Activity {
         return cell;
     }
 
-    @Override
-    public void onBackPressed() {
-        new ForwardListener(MenuActivity.class, this).onClick(null);
-    }
 }
