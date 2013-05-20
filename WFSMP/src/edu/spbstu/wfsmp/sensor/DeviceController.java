@@ -37,30 +37,30 @@ public interface DeviceController {
 
     int getDbSize() throws SensorException;
 
-    void turnOn() throws SensorException;   // todo asm: not tested
+    void turnOn() throws SensorException;
 
-    void turnOff() throws SensorException;  // todo asm: not tested
+    void turnOff() throws SensorException;
 
     // preferences
 
-    void setDisplayMode(@NotNull IndicationMode indicationMode) throws SensorException;  // todo asm: not tested
+    void setDisplayMode(@NotNull IndicationMode indicationMode) throws SensorException;
 
-    void setWhirligigType(WhirligigType whirligigType) throws SensorException;  // todo asm: not tested
+    void setWhirligigType(WhirligigType whirligigType) throws SensorException;
 
-    void setSound(boolean enabled) throws SensorException;  // todo asm: not tested
+    void setSound(boolean enabled) throws SensorException;
 
-    void setSensEnable(boolean enabled) throws SensorException;  // todo asm: not tested
+    void setSensEnable(boolean enabled) throws SensorException;
 
-    void setTime(@NotNull Date time) throws SensorException; // todo asm: not tested
+    void setTime(@NotNull Date time) throws SensorException;
 
-    void setDate(@NotNull Date date) throws SensorException; // todo asm: not tested
+    void setDate(@NotNull Date date) throws SensorException;
 
-    LinearTable readLinearTable() throws SensorException; // todo asm: not tested
+    LinearTable readLinearTable() throws SensorException;
 
-    void writeLinearTable(LinearTable linearTable) throws SensorException; // todo asm: not tested
+    void writeLinearTable(LinearTable linearTable) throws SensorException;
 
-    void writeSerialNumber(String serialNumber) throws SensorException; // todo asm: not tested
+    void writeSerialNumber(String serialNumber) throws SensorException;
 
-    void writeSoftwareVersion(String softwareVersion) throws SensorException; // todo asm: not tested
+    void writeSoftwareVersion(String softwareVersion) throws SensorException;
 
 }

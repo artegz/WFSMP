@@ -1,7 +1,9 @@
 package edu.spbstu.wfsmp.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import org.jetbrains.annotations.NotNull;
@@ -33,9 +35,14 @@ public class ForwardListener implements View.OnClickListener {
     }
 
     public void forwardTo() {
+        forwardActivity();
+    }
+
+    private void forwardActivity() {
         Log.i(ForwardListener.class.getName(), "Starting " + to.getName() + " activity.");
         final Intent intent = new Intent(from.getBaseContext(), to);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         from.startActivity(intent);
     }
+
 }

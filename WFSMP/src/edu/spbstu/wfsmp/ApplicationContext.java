@@ -6,6 +6,7 @@ import edu.spbstu.wfsmp.driver.DeviceProvider;
 import edu.spbstu.wfsmp.driver.j2xx.D2xxDeviceProvider;
 import edu.spbstu.wfsmp.sensor.DeviceController;
 import edu.spbstu.wfsmp.sensor.DeviceControllerImpl;
+import edu.spbstu.wfsmp.sensor.SensorException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -83,11 +84,11 @@ public class ApplicationContext {
     }
 
     @NotNull
-    public DeviceController getDeviceController() {
+    public DeviceController getDeviceController() throws SensorException {
         final DeviceController dc = (DeviceController) ApplicationContext.getInstance().get(ApplicationProperties.DEVICE_CONTROLLER);
 
         if (dc == null) {
-            throw new IllegalStateException("Device controller not initialized.");
+            throw new SensorException("Device controller not initialized.");
         }
 
         return dc;

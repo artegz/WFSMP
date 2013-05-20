@@ -43,7 +43,7 @@ public class CompassRoseView extends ImageView {
         paint.setStrokeWidth(2);
         paint.setStyle(Paint.Style.STROKE);
 
-        this.setImageResource(R.drawable.compassrose_d);
+        this.setImageResource(R.drawable.compassrose_d_s);
     }
 
     @Override

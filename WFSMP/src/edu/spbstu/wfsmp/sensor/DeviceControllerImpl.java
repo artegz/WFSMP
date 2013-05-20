@@ -4,6 +4,7 @@ import android.text.format.DateFormat;
 import com.ftdi.j2xx.FT_Device;
 import edu.spbstu.wfsmp.ApplicationContext;
 import edu.spbstu.wfsmp.driver.Device;
+import edu.spbstu.wfsmp.driver.DeviceException;
 import edu.spbstu.wfsmp.driver.DeviceUtils;
 import edu.spbstu.wfsmp.driver.j2xx.D2xxFTDevice;
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +12,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 /**
  * User: artegz
@@ -19,9 +23,9 @@ import java.util.*;
  */
 public class DeviceControllerImpl implements DeviceController {
 
-    private static final Object monitor = new Object();
+    private static final Semaphore semaphore = new Semaphore(1);
 
-    private static final int YEAR_BASE = 2000;
+    protected static final int YEAR_BASE = 2000;
     
     public static final int LINEAR_TABLE_70_MM_START = 0;
     public static final int LINEAR_TABLE_70_MM_END = 23;
@@ -60,7 +64,7 @@ public class DeviceControllerImpl implements DeviceController {
             public Void doOperation() throws SensorException {
                 // send prepared command
                 final String distance = String.format("%03d", parameters.getDistance());
-                final String depth = String.format("%02d", parameters.getDepth());
+                final String depth = String.format("%02d", (int) parameters.getDepth());
                 final String preparedRequest = ProtocolCodes.REQUEST_SAVE + distance + depth;
 
                 final String response = sendRequest(preparedRequest, ProtocolCodes.RESPONSE_SAVE);
@@ -283,7 +287,7 @@ public class DeviceControllerImpl implements DeviceController {
                         public void run() {
                             ftDevice.setBitMode((byte) 0x80, (byte) 0x20);
                         }
-                    }, 2000);
+                    }, 2100);
                 }
 
                 return null;
@@ -461,7 +465,7 @@ public class DeviceControllerImpl implements DeviceController {
                 readEepromBytes(linTable120mm, LINEAR_TABLE_120_MM_START, LINEAR_TABLE_120_MM_END);
                 
                 for (int i = 0; i < LINEAR_TABLE_NUM_POINTS; i++) {
-                    final byte linTable70mmVal1Hi = linTable70mm[4 * i];
+                    final byte linTable70mmVal1Hi = linTable70mm[4 * i];    // todo asm: correct it
                     final byte linTable70mmVal1Low = linTable70mm[4 * i + 1];
                     final byte linTable70mmVal2Hi = linTable70mm[4 * i + 2];
                     final byte linTable70mmVal2Low = linTable70mm[4 * i + 3];
@@ -751,7 +755,7 @@ public class DeviceControllerImpl implements DeviceController {
     }
 
     @Nullable
-    private String sendRequest(@NotNull String request, @Nullable String expectedResponse) throws SensorException {
+    protected String sendRequest(@NotNull String request, @Nullable String expectedResponse) throws SensorException {
         final String response;
         final boolean responseExpected = expectedResponse != null;
 
@@ -766,8 +770,8 @@ public class DeviceControllerImpl implements DeviceController {
 
                 ProtocolUtils.validate(response);
             }
-        } catch (IOException e) {
-            throw new SensorException(e);
+        } catch (DeviceException e) {
+            throw new SensorException(e.getMessage(), e);
         }
 
         return response;
@@ -803,18 +807,35 @@ public class DeviceControllerImpl implements DeviceController {
         }
     }
 
-    private <T> T doSyncOperation(@NotNull Operation<? extends T> op) throws SensorException {
+    protected  <T> T doSyncOperation(@NotNull Operation<? extends T> op) throws SensorException {
         final T result;
 
-        synchronized (monitor) {
-            //purgeBuffers();
-            result = op.doOperation();
+        try {
+            if (semaphore.tryAcquire(10, TimeUnit.SECONDS)) {
+                try {
+                    result = op.doOperation();
+                } catch (SensorException e) {
+                    try {
+                        device.purgeRx();
+                        device.purgeTx();
+                    } catch (IOException e1) {
+                        ApplicationContext.handleException(getClass(), e1);
+                    }
+                    throw e;
+                }
+            } else {
+                throw new SensorException("Device blocked.");
+            }
+        } catch (InterruptedException e) {
+            throw new AssertionError(e);
+        } finally {
+            semaphore.release();
         }
 
         return result;
     }
 
-    private static interface Operation<T> {
+    protected static interface Operation<T> {
         T doOperation() throws SensorException;
     }
 

@@ -9,7 +9,7 @@ public class MeasurementParameters {
 
     private int distance;
 
-    private int depth;
+    private double depth;
 
     public MeasurementParameters(int distance, int depth) {
         this.distance = distance;
@@ -20,7 +20,7 @@ public class MeasurementParameters {
         return distance;
     }
 
-    public int getDepth() {
+    public double getDepth() {
         return depth;
     }
 }

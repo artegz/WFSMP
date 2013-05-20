@@ -11,6 +11,9 @@ public class SensorException extends Exception {
         super(throwable);
     }
 
+    public SensorException(String detailMessage, Throwable throwable) {
+        super(detailMessage, throwable);
+    }
 
     public SensorException(String detailMessage) {
         super(detailMessage);

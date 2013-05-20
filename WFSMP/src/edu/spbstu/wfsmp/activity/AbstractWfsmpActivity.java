@@ -23,8 +23,12 @@ abstract class AbstractWfsmpActivity extends Activity {
     }
 
     protected void showMessage(final String message) {
+        showMessage(message, new Handler());
+    }
+
+    protected void showMessage(final String message, Handler handler) {
         Log.i(getClass().getName(), message);
-        new Handler().post(new Runnable() {
+        handler.post(new Runnable() {
             @Override
             public void run() {
                 ((TextView) findViewById(R.id.statusRow)).setText(message);
@@ -45,8 +49,8 @@ abstract class AbstractWfsmpActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_measurement:
-                if (! (this instanceof Measurement2Activity)) {
-                    forwardTo(Measurement2Activity.class);
+                if (! (this instanceof MeasurementActivity)) {
+                    forwardTo(MeasurementActivity.class);
                 }
                 break;
             case R.id.menu_preferences:
@@ -78,8 +82,8 @@ abstract class AbstractWfsmpActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (! (this instanceof Measurement2Activity)) {
-            forwardTo(Measurement2Activity.class);
+        if (! (this instanceof MeasurementActivity)) {
+            forwardTo(MeasurementActivity.class);
         }
     }
 }

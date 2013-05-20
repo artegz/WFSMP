@@ -19,9 +19,9 @@ import java.util.TimerTask;
  * Date: 14.10.12
  * Time: 15:04
  */
-public class Measurement2Activity extends AbstractWfsmpActivity {
+public class MeasurementActivity extends AbstractWfsmpActivity {
 
-    public static final String TAG = Measurement2Activity.class.getName();
+    public static final String TAG = MeasurementActivity.class.getName();
     private final static int STATE_CHECK_PERIOD = 2000;
     private Timer refreshTimer;
     private boolean refreshScheduled = false;
@@ -85,7 +85,9 @@ public class Measurement2Activity extends AbstractWfsmpActivity {
         this.refreshTimer = new Timer();
 
         // schedule update status rows
-        scheduleUpdateStatusRows();
+        if (!isActiveMeasurementSupported()) {
+            scheduleUpdateStatusRows();
+        }
         refreshScheduled = true;
 
         ApplicationContext.debug(getClass(), "Measurement status refresh timer started.");
@@ -99,7 +101,6 @@ public class Measurement2Activity extends AbstractWfsmpActivity {
             public void run() {
                 ApplicationContext.debug(getClass(), "Updating status rows.");
                 try {
-                    // todo asm: if something else failed - device controller may be unregistered
                     final Status status = ApplicationContext.getInstance().getDeviceController().getStatusOut();
 
                     ApplicationContext.debug(getClass(), "Status bits: " + status.toString());
@@ -119,18 +120,17 @@ public class Measurement2Activity extends AbstractWfsmpActivity {
                                 final int dbSize = ApplicationContext.getInstance().getDeviceController().getDbSize();
                                 ((TextView) findViewById(R.id.numRecordsValue)).setText(String.valueOf(dbSize));
                             } catch (SensorException e) {
-                                ApplicationContext.handleException(getClass(), e);
-                                throw new AssertionError(e);
+                                handleSensorException(e, handler);
                             }
                         }
                     });
 
                     ApplicationContext.debug(getClass(), "Last measurement values applied to view.");
                 } catch (SensorException e) {
-                    ApplicationContext.handleException(getClass(), e);
-                    //throw new AssertionError(e);
+                    handleSensorException(e, handler);
                 }
             }
+
         }, 0, STATE_CHECK_PERIOD);
     }
 
@@ -161,6 +161,8 @@ public class Measurement2Activity extends AbstractWfsmpActivity {
 
         @Override
         public void onClick(View view) {
+            boolean activeMeasurementSupported = isActiveMeasurementSupported();
+
             // check if not started
             final Status statusOut;
 
@@ -173,17 +175,52 @@ public class Measurement2Activity extends AbstractWfsmpActivity {
                 }
             } catch (SensorException e) {
                 ApplicationContext.handleException(getClass(), e);
-                showMessage("Error occurred.");
+                showMessage("Error occurred: " + e.getMessage());
             }
 
-            // init measurement start
-            try {
-                ApplicationContext.getInstance().getDeviceController().start();
-                showMessage("Measurement started.");
-            } catch (SensorException e) {
-                Log.e(TAG, e.getMessage(), e);
+
+            if (activeMeasurementSupported) {
+                // init measurement start
+                try {
+                    ApplicationContext.getInstance().getDeviceController().start();
+                    showMessage("Measurement started.");
+
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                while (!((DeviceControllerExt) ApplicationContext.getInstance().getDeviceController()).measurementFinished()) {
+                                    fillStatus(ApplicationContext.getInstance().getDeviceController().getCurrentMeasurement());
+                                }
+                            } catch (SensorException e) {
+                                showMessage(e.getMessage());
+                            }
+                        }
+                    });
+
+                } catch (SensorException e) {
+                    handleSensorException(e, new Handler());
+                }
+            } else {
+                // init measurement start
+                try {
+                    ApplicationContext.getInstance().getDeviceController().start();
+                    showMessage("Measurement started.");
+                } catch (SensorException e) {
+                    handleSensorException(e, new Handler());
+                }
             }
         }
+    }
+
+    private boolean isActiveMeasurementSupported() {
+        boolean activeMeasurementSupported = false;
+        try {
+            activeMeasurementSupported = (ApplicationContext.getInstance().getDeviceController() instanceof DeviceControllerExt);
+        } catch (SensorException e) {
+            // ignore
+        }
+        return activeMeasurementSupported;
     }
 
     private class OnMeasurementStopListener implements View.OnClickListener {
@@ -202,16 +239,16 @@ public class Measurement2Activity extends AbstractWfsmpActivity {
                 }
             } catch (SensorException e) {
                 ApplicationContext.handleException(getClass(), e);
-                showMessage("Error occurred.");
+                showMessage("Error occurred: " + e.getMessage());
             }
 
             // init measurement stop
             try {
                 ApplicationContext.getInstance().getDeviceController().stop();
+                showMessage("Measurement stopped.");
             } catch (SensorException e) {
-                Log.e(TAG, e.getMessage(), e);
+                handleSensorException(e, new Handler());
             }
-            showMessage("Measurement stopped.");
         }
     }
 
@@ -244,10 +281,15 @@ public class Measurement2Activity extends AbstractWfsmpActivity {
                     ApplicationContext.getInstance().getDeviceController().save(new MeasurementParameters(distance, depth));
                     showMessage("Measurement result saved.");
                 } catch (SensorException e) {
-                    Log.e(TAG, e.getMessage(), e);
+                    handleSensorException(e, new Handler());
                 }
             }
         }
+    }
+
+    private void handleSensorException(SensorException e, Handler handler) {
+        Log.e(TAG, e.getMessage(), e);
+        showMessage("ERROR: " + e.getMessage(), handler);
     }
 
     private class ExportResultsListener implements View.OnClickListener {

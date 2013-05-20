@@ -56,4 +56,44 @@
     <string name="connect">Подключиться</string>
     <string name="disconnect">Отключиться</string>
 
+    <string name="msg_none"> </string>
+    <string name="msg_select_dev">Выберите устройство</string>
+
+    <string name="pref_apply">Применить</string>
+
+    <string name="pref_sound">Звук</string>
+    <string name="pref_add_check">Контроль контакта</string>
+    <string name="pref_psv_mode">Режим вертушки</string>
+    <string name="pref_psv_display">Режим дисплея</string>
+
+    <string name="pref_v_120">120мм</string>
+    <string name="pref_v_70">70мм</string>
+    <string name="pref_1_1">1:1</string>
+    <string name="pref_1_20">1:20</string>
+
+    <string name="on">Вкл.</string>
+    <string name="off">Выкл.</string>
+
+    <string name="loading">…</string>
+
+    <string name="info_serial_number">Серийный номер</string>
+    <string name="info_software_version">Версия ПО</string>
+
+    <string name="menu_preferences">Настройки</string>
+
+    <string name="prog_write_enable">Разрешение записи</string>
+    <string name="prog_read">Прочитать</string>
+    <string name="prog_write">Записать</string>
+    <string name="prog_serial_number">Серийный номер</string>
+    <string name="prog_software_verison">Версия ПО</string>
+    <string name="prog_linear_table">Таблица линеаризации</string>
+    <string name="prog_dev_info">Информация об устройстве</string>
+
+    <string name="prog_wh_70">70мм</string>
+    <string name="prog_wh_120">120мм</string>
+
+    <string name="meas_clearDb">Очистить базу данных</string>
+
+    <string name="pref_read">Прочитать</string>
+
 </resources>

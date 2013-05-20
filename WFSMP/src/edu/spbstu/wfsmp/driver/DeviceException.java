@@ -11,4 +11,11 @@ public class DeviceException extends Exception {
         super(throwable);
     }
 
+    public DeviceException(String detailMessage) {
+        super(detailMessage);
+    }
+
+    public DeviceException(String detailMessage, Throwable throwable) {
+        super(detailMessage, throwable);
+    }
 }

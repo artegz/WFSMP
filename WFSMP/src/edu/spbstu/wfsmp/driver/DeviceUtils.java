@@ -19,16 +19,22 @@ import java.io.UnsupportedEncodingException;
 public class DeviceUtils {
     
     public static final String TAG = DeviceUtils.class.getName();
-    public static final int READ_BLOCK_TIMEOUT = 25;
+
+    public static final int READ_BYTE_PAUSE_MS = 25;
+    public static final int READ_BYTE_TIMEOUT_MS = 500;
 
     @Nullable
     public static String send(@NotNull String requestString, @NotNull Device device, boolean responseExpected)
-            throws SensorException, IOException {
-        return send0(requestString, device, responseExpected);
+            throws DeviceException {
+        try {
+            return send0(requestString, device, responseExpected);
+        } catch (IOException e) {
+            throw new DeviceException(e);
+        }
     }
 
     @Nullable
-    private static String send0(@NotNull String commandString, @NotNull Device device, boolean responseExpected) throws SensorException, IOException {
+    private static String send0(@NotNull String commandString, @NotNull Device device, boolean responseExpected) throws IOException, DeviceException {
         ApplicationContext.debug(DeviceUtils.class, "Sending command '" + commandString + "'.");
 
         // send command
@@ -40,7 +46,7 @@ public class DeviceUtils {
 
         if (responseExpected) {
             // receive response
-            response = receiveCommand0(device);
+            response = receiveCommand0(device, ProtocolUtils.RESPONSE_PREFIX, ProtocolUtils.COMMAND_POSTFIX);
 
             ApplicationContext.debug(DeviceUtils.class, "Response command received: " + response);
         } else {
@@ -53,7 +59,7 @@ public class DeviceUtils {
 
             if (isResponseAvailable(device)) {
                 // response received, lets read it and return
-                response = receiveCommand0(device);
+                response = receiveCommand0(device, ProtocolUtils.RESPONSE_PREFIX, ProtocolUtils.COMMAND_POSTFIX);
             } else {
                 response = null;
             }
@@ -63,14 +69,14 @@ public class DeviceUtils {
     }
 
     @NotNull
-    private static String receiveCommand0(@NotNull Device device) throws IOException, SensorException {
+    private static String receiveCommand0(@NotNull Device device, char startToken, String endToken) throws IOException, DeviceException {
         // read raw command from input stream
         //noinspection UnnecessaryLocalVariable
-        final String receivedRawCommand = readRawCommand(device);
+        final String receivedRawCommand = readRawCommand(device, startToken, endToken);
         return receivedRawCommand;
     }
 
-    private static void sendCommand(@NotNull String command, @NotNull Device device) throws SensorException {
+    private static void sendCommand(@NotNull String command, @NotNull Device device) throws DeviceException {
 
         logBytes(command);
 
@@ -82,27 +88,38 @@ public class DeviceUtils {
             /*outputStreamWriter.append(command);
             outputStreamWriter.flush();*/
         } catch (IOException e) {
-            throw new SensorException(e);
+            throw new DeviceException(e);
         }
     }
 
+    // todo: make startToken - String
     @NotNull
-    private static String readRawCommand(@NotNull Device device) throws IOException, SensorException {
+    private static String readRawCommand(@NotNull Device device, char startToken, @NotNull String endToken) throws IOException, DeviceException {
         final StringBuilder sb = new StringBuilder();
 
-        final char prefix = readChar(device);
+        final char prefix;
 
-        if (prefix != ProtocolUtils.RESPONSE_PREFIX) {
-            ApplicationContext.error(DeviceUtils.class, "Command has invalid prefix. Expected: '" + ProtocolUtils.RESPONSE_PREFIX + "'. Received: '" + prefix + "'.");
-            throw new SensorException("Command has invalid prefix. Expected: '" + ProtocolUtils.RESPONSE_PREFIX + "'. Received: '" + prefix + "'." );
+        try {
+            prefix = readChar(device);
+        } catch (DeviceTimeoutException e) {
+            throw new DeviceException("Device not available, it's probably turned off.", e);
+        }
+
+        if (prefix != startToken) {
+            ApplicationContext.error(DeviceUtils.class, "Invalid command start. Expected: '" + ProtocolUtils.RESPONSE_PREFIX + "'. Received: '" + prefix + "'.");
+            throw new DeviceException("Invalid command start. Expected: '" + startToken + "'. Received: '" + prefix + "'." );
         }
 
         // append prefix
         sb.append(prefix);
 
         // read until the command is complete
-        while (! sb.toString().endsWith(ProtocolUtils.COMMAND_POSTFIX)) {
-            sb.append(readChar(device));
+        try {
+            while (! sb.toString().endsWith(endToken)) {
+                sb.append(readChar(device));
+            }
+        } catch (DeviceTimeoutException e) {
+            throw new DeviceException("Response has not been completely received. Probably device has been turned off or responce is invalid.");
         }
 
         final String completeCommand = sb.toString();
@@ -111,7 +128,7 @@ public class DeviceUtils {
         return completeCommand.substring(0, completeCommand.length() - ProtocolUtils.COMMAND_POSTFIX.length());
     }
 
-    private static char readChar(@NotNull Device device) throws IOException {
+    private static char readChar(@NotNull Device device) throws IOException, DeviceException {
         byte b = readByte(device, true);
         /*int b = streamReader.read();
         assert (b != -1) : "Unexpected end of stream has been reached.";
@@ -141,7 +158,7 @@ public class DeviceUtils {
         }
     }
 
-    public static byte readByte(Device device, boolean waitData) throws IOException {
+    private static byte readByte(Device device, boolean waitData) throws IOException, DeviceException {
         final byte[] buffer = new byte[1];
         final int bytesRead = readBytes(buffer, 0, 1, device, waitData);
 
@@ -152,13 +169,20 @@ public class DeviceUtils {
         return buffer[0];
     }
 
-    public static int readBytes(byte[] buffer, int offset, int length, Device device, boolean waitData) throws IOException {
+    private static int readBytes(byte[] buffer, int offset, int length, Device device, boolean waitData) throws IOException, DeviceException {
         int queueStatus = device.getQueueStatus();
 
         try {
+            final long startTime = System.currentTimeMillis();
             while (queueStatus < 1 && waitData) {
+                // check if global timeout was expired
+                final long currentTime = System.currentTimeMillis();
+                if (currentTime - startTime > READ_BYTE_TIMEOUT_MS) {
+                    throw new DeviceTimeoutException("The device is not responding.");
+                }
+
                 // wait
-                Thread.sleep(READ_BLOCK_TIMEOUT);
+                Thread.sleep(READ_BYTE_PAUSE_MS);
                 // check if new data appears
                 queueStatus = device.getQueueStatus();
             }

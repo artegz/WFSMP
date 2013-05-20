@@ -67,7 +67,7 @@ public class D2xxFTDevice implements Device {
 
     private void checkOpened() throws IOException {
         if (!opened) {
-            throw new IOException("Deveice is not available.");
+            throw new IOException("Device is not available.");
         }
     }
 
